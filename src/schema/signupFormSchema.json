@@ -1,0 +1,21 @@
+{
+	"type": "object",
+	"properties": {
+		"username": {
+			"type": "string",
+			"minLength": 3,
+			"title": "Username"
+		},
+		"email": {
+			"type": "string",
+			"format": "email",
+			"title": "Email"
+		},
+		"password": {
+			"type": "string",
+			"minLength": 6,
+			"title": "Password"
+		}
+	},
+	"required": ["username", "email", "password"]
+}

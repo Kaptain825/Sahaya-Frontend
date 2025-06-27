@@ -1,0 +1,20 @@
+[
+	{
+		"title": "REGISTER",
+		"description": "Sign up with a few simple details",
+		"icon": "/icons/signup.png",
+		"hoverIcon": "/icons/signup_hover.png"
+	},
+	{
+		"title": "CHOOSE NEEDS",
+		"description": "Let us know about your child's specific needs",
+		"icon": "/icons/person.png",
+		"hoverIcon": "/icons/person_hover.png"
+	},
+	{
+		"title": "TRACK PROGRESS",
+		"description": "Monitor Progress and stay uptuned on your child’s upcoming milestones!",
+		"icon": "/icons/track.png",
+		"hoverIcon": "/icons/track_hover.png"
+	}
+]
