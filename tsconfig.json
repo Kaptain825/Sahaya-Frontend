@@ -1,11 +1,14 @@
 {
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "src/jest.setup.js"],
   "compilerOptions": {
+    "resolveJsonModule": true,
     "target": "ES2022",
     "jsx": "react-jsx",
     "module": "ESNext",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["vite/client"],
+    "types": ["vite/client","jest","@testing-library/jest-dom"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
