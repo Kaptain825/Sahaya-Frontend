@@ -1,0 +1,32 @@
+{
+	"challengeId": "social",
+	"name": "Social Interaction",
+	"questionsByAgeBand": {
+		"3-5": [
+			{
+				"id": "social_q1",
+				"type": "radio",
+				"text": "How often does the child engage in parallel play with peers?",
+				"options": ["Never", "Sometimes", "Often"]
+			},
+			{
+				"id": "social_q2",
+				"type": "rating",
+				"text": "Rate the child's eye contact during interaction (1-10)"
+			}
+		],
+		"6-8": [
+			{
+				"id": "social_q1",
+				"type": "radio",
+				"text": "Does the child initiate group play or conversations?",
+				"options": ["Rarely", "Sometimes", "Frequently"]
+			},
+			{
+				"id": "social_q2",
+				"type": "boolean",
+				"text": "Can the child maintain friendships over time?"
+			}
+		]
+	}
+}

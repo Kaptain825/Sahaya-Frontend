@@ -1,0 +1,25 @@
+{
+	"type": "VerticalLayout",
+	"elements": [
+		{
+			"type": "Control",
+			"scope": "#/properties/name"
+		},
+		{
+			"type": "Control",
+			"scope": "#/properties/gender"
+		},
+		{
+			"type": "Control",
+			"scope": "#/properties/ageBand"
+		},
+		{
+			"type": "Control",
+			"scope": "#/properties/challenges",
+			"options": {
+				"multi": true,
+				"showUnfocusedDescription": true
+			}
+		}
+	]
+}

@@ -16,6 +16,7 @@ import { Route as Why_usIndexRouteImport } from './routes/why_us/index'
 import { Route as SignupIndexRouteImport } from './routes/signup/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
+import { Route as AssessmentStartIndexRouteImport } from './routes/assessment/start/index'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo.start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo.start.api-request'
 import { ServerRoute as ApiDemoNamesServerRouteImport } from './routes/api.demo-names'
@@ -47,6 +48,11 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   path: '/demo/tanstack-query',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AssessmentStartIndexRoute = AssessmentStartIndexRouteImport.update({
+  id: '/assessment/start/',
+  path: '/assessment/start/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
   id: '/demo/start/server-funcs',
   path: '/demo/start/server-funcs',
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/why_us': typeof Why_usIndexRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/assessment/start': typeof AssessmentStartIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/why_us': typeof Why_usIndexRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/assessment/start': typeof AssessmentStartIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -90,6 +98,7 @@ export interface FileRoutesById {
   '/why_us/': typeof Why_usIndexRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/assessment/start/': typeof AssessmentStartIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +110,7 @@ export interface FileRouteTypes {
     | '/why_us'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
+    | '/assessment/start'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/why_us'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
+    | '/assessment/start'
   id:
     | '__root__'
     | '/'
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/why_us/'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
+    | '/assessment/start/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -129,6 +141,7 @@ export interface RootRouteChildren {
   Why_usIndexRoute: typeof Why_usIndexRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
   DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
+  AssessmentStartIndexRoute: typeof AssessmentStartIndexRoute
 }
 export interface FileServerRoutesByFullPath {
   '/api/demo-names': typeof ApiDemoNamesServerRoute
@@ -189,6 +202,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoTanstackQueryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/assessment/start/': {
+      id: '/assessment/start/'
+      path: '/assessment/start'
+      fullPath: '/assessment/start'
+      preLoaderRoute: typeof AssessmentStartIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/demo/start/server-funcs': {
       id: '/demo/start/server-funcs'
       path: '/demo/start/server-funcs'
@@ -225,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   Why_usIndexRoute: Why_usIndexRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
   DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
+  AssessmentStartIndexRoute: AssessmentStartIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
