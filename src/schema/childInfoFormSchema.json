@@ -1,0 +1,37 @@
+{
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"title": "Child's Name"
+		},
+		"gender": {
+			"type": "string",
+			"title": "Gender",
+			"enum": ["Male", "Female", "Other"]
+		},
+		"ageBand": {
+			"type": "string",
+			"title": "Age Band",
+			"enum": ["3-5", "6-8", "9-12", "13+"]
+		},
+		"challenges": {
+			"type": "array",
+			"title": "Challenges faced by the child",
+			"items": {
+				"type": "string",
+				"enum": [
+					"Social Interaction",
+					"Cognitive Skills",
+					"Communication",
+					"Motor Skills",
+					"Behavioral Issues",
+					"Learning Difficulties"
+				]
+			},
+			"uniqueItems": true,
+			"minItems": 1
+		}
+	},
+	"required": ["name", "gender", "ageBand", "challenges"]
+}

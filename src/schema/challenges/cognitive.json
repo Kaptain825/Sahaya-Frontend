@@ -1,0 +1,31 @@
+{
+	"challengeId": "cognitive",
+	"name": "Cognitive Skills",
+	"questionsByAgeBand": {
+		"3-5": [
+			{
+				"id": "cog_q1",
+				"type": "boolean",
+				"text": "Can the child identify basic shapes and colors?"
+			},
+			{
+				"id": "cog_q2",
+				"type": "rating",
+				"text": "Rate the child's attention span (1-10)"
+			}
+		],
+		"6-8": [
+			{
+				"id": "cog_q1",
+				"type": "radio",
+				"text": "How well can the child solve simple puzzles or problems?",
+				"options": ["Poorly", "Fairly", "Well"]
+			},
+			{
+				"id": "cog_q2",
+				"type": "rating",
+				"text": "Rate the child’s memory skills (1-10)"
+			}
+		]
+	}
+}

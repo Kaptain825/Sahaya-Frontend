@@ -124,8 +124,13 @@ export default function LoginPage() {
 
 					{/* Card Body */}
 					<div
-						className="w-full px-8 py-8 rounded-b flex-1 flex flex-col justify-center"
-						style={{ background: colorScheme.cardBody, gap: 0, paddingTop: 0 }}
+						className="w-full px-8 py-8 rounded-b flex-1 flex flex-col justify-center mt-12"
+						style={{
+							background: colorScheme.cardBody,
+							gap: 0,
+							paddingTop: 0,
+							marginTop: 48,
+						}}
 					>
 						<JsonForms
 							schema={loginSchema}
