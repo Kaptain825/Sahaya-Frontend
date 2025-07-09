@@ -1,0 +1,59 @@
+
+{
+    "challengeId": "behavior",
+    "name": "Behavioral Issues",
+    "questionsByAgeBand": {
+        "3-5": [
+            {
+                "id": "beh_q1",
+                "type": "boolean",
+                "text": "Does the child have frequent temper tantrums or meltdowns?"
+            },
+            {
+                "id": "beh_q2",
+                "type": "radio",
+                "text": "How often does the child follow simple rules or routines?",
+                "options": ["Rarely", "Sometimes", "Most of the time"]
+            }
+        ],
+        "6-8": [
+            {
+                "id": "beh_q1",
+                "type": "radio",
+                "text": "How well does the child manage frustration or disappointment?",
+                "options": ["Struggles", "Sometimes manages", "Handles well"]
+            },
+            {
+                "id": "beh_q2",
+                "type": "boolean",
+                "text": "Does the child display aggressive or disruptive behavior at home or school?"
+            }
+        ],
+        "9-12": [
+            {
+                "id": "beh_q1",
+                "type": "boolean",
+                "text": "Does the child have difficulty accepting consequences for actions?"
+            },
+            {
+                "id": "beh_q2",
+                "type": "radio",
+                "text": "How often does the child argue with adults or authority figures?",
+                "options": ["Often", "Sometimes", "Rarely"]
+            }
+        ],
+        "13+": [
+            {
+                "id": "beh_q1",
+                "type": "rating",
+                "text": "Rate the child's ability to manage emotions and impulses (1-10)"
+            },
+            {
+                "id": "beh_q2",
+                "type": "radio",
+                "text": "How well does the child resolve conflicts with peers or family?",
+                "options": ["Struggles", "Sometimes manages", "Handles well"]
+            }
+        ]
+    }
+}

@@ -1,0 +1,59 @@
+
+{
+    "challengeId": "motor",
+    "name": "Motor Skills",
+    "questionsByAgeBand": {
+        "3-5": [
+            {
+                "id": "motor_q1",
+                "type": "boolean",
+                "text": "Can the child walk, run, and climb without frequent falls?"
+            },
+            {
+                "id": "motor_q2",
+                "type": "radio",
+                "text": "How well can the child use hands for activities like stacking blocks or drawing?",
+                "options": ["Struggles", "Manages with help", "Independently"]
+            }
+        ],
+        "6-8": [
+            {
+                "id": "motor_q1",
+                "type": "radio",
+                "text": "How well does the child participate in sports or playground games?",
+                "options": ["Rarely", "Sometimes", "Frequently"]
+            },
+            {
+                "id": "motor_q2",
+                "type": "rating",
+                "text": "Rate the child's ability to perform tasks requiring hand coordination (1-10)"
+            }
+        ],
+        "9-12": [
+            {
+                "id": "motor_q1",
+                "type": "boolean",
+                "text": "Does the child have difficulty with activities like writing or using scissors?"
+            },
+            {
+                "id": "motor_q2",
+                "type": "radio",
+                "text": "How often does the child tire quickly during physical activities?",
+                "options": ["Often", "Sometimes", "Rarely"]
+            }
+        ],
+        "13+": [
+            {
+                "id": "motor_q1",
+                "type": "rating",
+                "text": "Rate the child's confidence in participating in group sports or physical education (1-10)"
+            },
+            {
+                "id": "motor_q2",
+                "type": "radio",
+                "text": "How well does the child manage fine motor tasks (e.g., typing, drawing, crafts)?",
+                "options": ["Struggles", "Sometimes manages", "Handles well"]
+            }
+        ]
+    }
+}

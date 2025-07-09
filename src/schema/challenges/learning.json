@@ -1,0 +1,58 @@
+{
+	"challengeId": "learning",
+	"name": "Learning Difficulties",
+	"questionsByAgeBand": {
+		"3-5": [
+			{
+				"id": "learn_q1",
+				"type": "boolean",
+				"text": "Does the child have trouble recognizing letters, numbers, or shapes?"
+			},
+			{
+				"id": "learn_q2",
+				"type": "radio",
+				"text": "How easily does the child remember new words or concepts?",
+				"options": ["Struggles", "Sometimes manages", "Learns easily"]
+			}
+		],
+		"6-8": [
+			{
+				"id": "learn_q1",
+				"type": "radio",
+				"text": "How well does the child keep up with reading or math at school?",
+				"options": ["Below grade level", "At grade level", "Above grade level"]
+			},
+			{
+				"id": "learn_q2",
+				"type": "rating",
+				"text": "Rate the child's ability to follow classroom instructions (1-10)"
+			}
+		],
+		"9-12": [
+			{
+				"id": "learn_q1",
+				"type": "boolean",
+				"text": "Does the child need extra help with homework or assignments?"
+			},
+			{
+				"id": "learn_q2",
+				"type": "radio",
+				"text": "How often does the child forget what was learned in previous lessons?",
+				"options": ["Often", "Sometimes", "Rarely"]
+			}
+		],
+		"13+": [
+			{
+				"id": "learn_q1",
+				"type": "rating",
+				"text": "Rate the child's confidence in learning new subjects (1-10)"
+			},
+			{
+				"id": "learn_q2",
+				"type": "radio",
+				"text": "How well does the child organize and complete schoolwork independently?",
+				"options": ["Struggles", "Sometimes manages", "Handles well"]
+			}
+		]
+	}
+}

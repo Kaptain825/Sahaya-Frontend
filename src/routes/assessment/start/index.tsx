@@ -1,6 +1,7 @@
 import { materialRenderers } from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
-import { createFileRoute } from "@tanstack/react-router";
+
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 import childInfoSchema from "../../../schema/childInfoFormSchema.json";
@@ -38,6 +39,7 @@ export default function ChildInfoPage() {
 		ageBand: "",
 		challenges: [],
 	});
+	const navigate = useNavigate();
 
 	const handleChange = (data: ChildInfoFormData) => {
 		setFormData(data);
@@ -50,7 +52,15 @@ export default function ChildInfoPage() {
 			formData.ageBand &&
 			formData.challenges.length > 0
 		) {
-			alert("Proceeding to challenge assessments...");
+			navigate({
+				to: "/assessment/challenge",
+				search: {
+					name: formData.name,
+					gender: formData.gender,
+					ageBand: formData.ageBand,
+					challenges: formData.challenges,
+				},
+			});
 		} else {
 			alert("Please complete all fields before continuing.");
 		}
