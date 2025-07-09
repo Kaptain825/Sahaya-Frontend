@@ -17,6 +17,7 @@ import { Route as SignupIndexRouteImport } from './routes/signup/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
 import { Route as AssessmentStartIndexRouteImport } from './routes/assessment/start/index'
+import { Route as AssessmentChallengeIndexRouteImport } from './routes/assessment/challenge/index'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo.start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo.start.api-request'
 import { ServerRoute as ApiDemoNamesServerRouteImport } from './routes/api.demo-names'
@@ -53,6 +54,12 @@ const AssessmentStartIndexRoute = AssessmentStartIndexRouteImport.update({
   path: '/assessment/start/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AssessmentChallengeIndexRoute =
+  AssessmentChallengeIndexRouteImport.update({
+    id: '/assessment/challenge/',
+    path: '/assessment/challenge/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
   id: '/demo/start/server-funcs',
   path: '/demo/start/server-funcs',
@@ -77,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/why_us': typeof Why_usIndexRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/assessment/challenge': typeof AssessmentChallengeIndexRoute
   '/assessment/start': typeof AssessmentStartIndexRoute
 }
 export interface FileRoutesByTo {
@@ -87,6 +95,7 @@ export interface FileRoutesByTo {
   '/why_us': typeof Why_usIndexRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/assessment/challenge': typeof AssessmentChallengeIndexRoute
   '/assessment/start': typeof AssessmentStartIndexRoute
 }
 export interface FileRoutesById {
@@ -98,6 +107,7 @@ export interface FileRoutesById {
   '/why_us/': typeof Why_usIndexRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/assessment/challenge/': typeof AssessmentChallengeIndexRoute
   '/assessment/start/': typeof AssessmentStartIndexRoute
 }
 export interface FileRouteTypes {
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/why_us'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
+    | '/assessment/challenge'
     | '/assessment/start'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/why_us'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
+    | '/assessment/challenge'
     | '/assessment/start'
   id:
     | '__root__'
@@ -130,6 +142,7 @@ export interface FileRouteTypes {
     | '/why_us/'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
+    | '/assessment/challenge/'
     | '/assessment/start/'
   fileRoutesById: FileRoutesById
 }
@@ -141,6 +154,7 @@ export interface RootRouteChildren {
   Why_usIndexRoute: typeof Why_usIndexRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
   DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
+  AssessmentChallengeIndexRoute: typeof AssessmentChallengeIndexRoute
   AssessmentStartIndexRoute: typeof AssessmentStartIndexRoute
 }
 export interface FileServerRoutesByFullPath {
@@ -209,6 +223,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AssessmentStartIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/assessment/challenge/': {
+      id: '/assessment/challenge/'
+      path: '/assessment/challenge'
+      fullPath: '/assessment/challenge'
+      preLoaderRoute: typeof AssessmentChallengeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/demo/start/server-funcs': {
       id: '/demo/start/server-funcs'
       path: '/demo/start/server-funcs'
@@ -245,6 +266,7 @@ const rootRouteChildren: RootRouteChildren = {
   Why_usIndexRoute: Why_usIndexRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
   DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
+  AssessmentChallengeIndexRoute: AssessmentChallengeIndexRoute,
   AssessmentStartIndexRoute: AssessmentStartIndexRoute,
 }
 export const routeTree = rootRouteImport

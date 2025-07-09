@@ -26,6 +26,32 @@
 				"type": "rating",
 				"text": "Rate the child’s memory skills (1-10)"
 			}
+		],
+		"9-12": [
+			{
+				"id": "cog_q1",
+				"type": "boolean",
+				"text": "Does the child have difficulty understanding abstract concepts (e.g., time, cause and effect)?"
+			},
+			{
+				"id": "cog_q2",
+				"type": "radio",
+				"text": "How well does the child plan and organize tasks (e.g., completing homework, following steps)?",
+				"options": ["Struggles", "Sometimes manages", "Handles well"]
+			}
+		],
+		"13+": [
+			{
+				"id": "cog_q1",
+				"type": "rating",
+				"text": "Rate the child's problem-solving and reasoning skills (1-10)"
+			},
+			{
+				"id": "cog_q2",
+				"type": "radio",
+				"text": "How well does the child remember and apply information learned in school?",
+				"options": ["Struggles", "Sometimes manages", "Handles well"]
+			}
 		]
 	}
 }

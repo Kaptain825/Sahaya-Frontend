@@ -27,6 +27,32 @@
 				"type": "boolean",
 				"text": "Can the child maintain friendships over time?"
 			}
+		],
+		"9-12": [
+			{
+				"id": "social_q1",
+				"type": "boolean",
+				"text": "Does the child participate in team activities or clubs?"
+			},
+			{
+				"id": "social_q2",
+				"type": "radio",
+				"text": "How well does the child resolve conflicts with peers?",
+				"options": ["Struggles", "Sometimes manages", "Handles well"]
+			}
+		],
+		"13+": [
+			{
+				"id": "social_q1",
+				"type": "rating",
+				"text": "Rate the child's confidence in social situations (1-10)"
+			},
+			{
+				"id": "social_q2",
+				"type": "radio",
+				"text": "How well does the child build and maintain close friendships?",
+				"options": ["Struggles", "Sometimes manages", "Handles well"]
+			}
 		]
 	}
 }

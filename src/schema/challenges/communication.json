@@ -1,0 +1,58 @@
+{
+    "challengeId": "communication",
+    "name": "Communication",
+    "questionsByAgeBand": {
+        "3-5": [
+            {
+                "id": "comm_q1",
+                "type": "boolean",
+                "text": "Can the child use simple words or phrases to express needs?"
+            },
+            {
+                "id": "comm_q2",
+                "type": "radio",
+                "text": "How clearly can others understand the child's speech?",
+                "options": ["Rarely", "Sometimes", "Most of the time"]
+            }
+        ],
+        "6-8": [
+            {
+                "id": "comm_q1",
+                "type": "radio",
+                "text": "How well does the child follow multi-step instructions?",
+                "options": ["Struggles", "Manages with help", "Independently"]
+            },
+            {
+                "id": "comm_q2",
+                "type": "rating",
+                "text": "Rate the child's ability to express thoughts and feelings (1-10)"
+            }
+        ],
+        "9-12": [
+            {
+                "id": "comm_q1",
+                "type": "boolean",
+                "text": "Does the child participate in group discussions or conversations?"
+            },
+            {
+                "id": "comm_q2",
+                "type": "radio",
+                "text": "How often does the child misunderstand jokes or figurative language?",
+                "options": ["Often", "Sometimes", "Rarely"]
+            }
+        ],
+        "13+": [
+            {
+                "id": "comm_q1",
+                "type": "rating",
+                "text": "Rate the child's confidence in public speaking or presentations (1-10)"
+            },
+            {
+                "id": "comm_q2",
+                "type": "radio",
+                "text": "How well does the child adapt communication style for different situations?",
+                "options": ["Struggles", "Sometimes manages", "Handles well"]
+            }
+        ]
+    }
+}
