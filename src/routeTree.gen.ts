@@ -16,10 +16,12 @@ import { Route as Why_usIndexRouteImport } from './routes/why_us/index'
 import { Route as SignupIndexRouteImport } from './routes/signup/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
+import { Route as TemplateListIndexRouteImport } from './routes/template/list/index'
 import { Route as AssessmentStartIndexRouteImport } from './routes/assessment/start/index'
 import { Route as AssessmentChallengeIndexRouteImport } from './routes/assessment/challenge/index'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo.start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo.start.api-request'
+import { Route as TemplateListNewIndexRouteImport } from './routes/template/list/new/index'
 import { ServerRoute as ApiDemoNamesServerRouteImport } from './routes/api.demo-names'
 
 const rootServerRouteImport = createServerRootRoute()
@@ -49,6 +51,11 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   path: '/demo/tanstack-query',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TemplateListIndexRoute = TemplateListIndexRouteImport.update({
+  id: '/template/list/',
+  path: '/template/list/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AssessmentStartIndexRoute = AssessmentStartIndexRouteImport.update({
   id: '/assessment/start/',
   path: '/assessment/start/',
@@ -70,6 +77,11 @@ const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
   path: '/demo/start/api-request',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TemplateListNewIndexRoute = TemplateListNewIndexRouteImport.update({
+  id: '/template/list/new/',
+  path: '/template/list/new/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiDemoNamesServerRoute = ApiDemoNamesServerRouteImport.update({
   id: '/api/demo-names',
   path: '/api/demo-names',
@@ -86,6 +98,8 @@ export interface FileRoutesByFullPath {
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
   '/assessment/challenge': typeof AssessmentChallengeIndexRoute
   '/assessment/start': typeof AssessmentStartIndexRoute
+  '/template/list': typeof TemplateListIndexRoute
+  '/template/list/new': typeof TemplateListNewIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -97,6 +111,8 @@ export interface FileRoutesByTo {
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
   '/assessment/challenge': typeof AssessmentChallengeIndexRoute
   '/assessment/start': typeof AssessmentStartIndexRoute
+  '/template/list': typeof TemplateListIndexRoute
+  '/template/list/new': typeof TemplateListNewIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -109,6 +125,8 @@ export interface FileRoutesById {
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
   '/assessment/challenge/': typeof AssessmentChallengeIndexRoute
   '/assessment/start/': typeof AssessmentStartIndexRoute
+  '/template/list/': typeof TemplateListIndexRoute
+  '/template/list/new/': typeof TemplateListNewIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -122,6 +140,8 @@ export interface FileRouteTypes {
     | '/demo/start/server-funcs'
     | '/assessment/challenge'
     | '/assessment/start'
+    | '/template/list'
+    | '/template/list/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +153,8 @@ export interface FileRouteTypes {
     | '/demo/start/server-funcs'
     | '/assessment/challenge'
     | '/assessment/start'
+    | '/template/list'
+    | '/template/list/new'
   id:
     | '__root__'
     | '/'
@@ -144,6 +166,8 @@ export interface FileRouteTypes {
     | '/demo/start/server-funcs'
     | '/assessment/challenge/'
     | '/assessment/start/'
+    | '/template/list/'
+    | '/template/list/new/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -156,6 +180,8 @@ export interface RootRouteChildren {
   DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
   AssessmentChallengeIndexRoute: typeof AssessmentChallengeIndexRoute
   AssessmentStartIndexRoute: typeof AssessmentStartIndexRoute
+  TemplateListIndexRoute: typeof TemplateListIndexRoute
+  TemplateListNewIndexRoute: typeof TemplateListNewIndexRoute
 }
 export interface FileServerRoutesByFullPath {
   '/api/demo-names': typeof ApiDemoNamesServerRoute
@@ -216,6 +242,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoTanstackQueryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/template/list/': {
+      id: '/template/list/'
+      path: '/template/list'
+      fullPath: '/template/list'
+      preLoaderRoute: typeof TemplateListIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/assessment/start/': {
       id: '/assessment/start/'
       path: '/assessment/start'
@@ -244,6 +277,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoStartApiRequestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/template/list/new/': {
+      id: '/template/list/new/'
+      path: '/template/list/new'
+      fullPath: '/template/list/new'
+      preLoaderRoute: typeof TemplateListNewIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 declare module '@tanstack/react-start/server' {
@@ -268,6 +308,8 @@ const rootRouteChildren: RootRouteChildren = {
   DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
   AssessmentChallengeIndexRoute: AssessmentChallengeIndexRoute,
   AssessmentStartIndexRoute: AssessmentStartIndexRoute,
+  TemplateListIndexRoute: TemplateListIndexRoute,
+  TemplateListNewIndexRoute: TemplateListNewIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

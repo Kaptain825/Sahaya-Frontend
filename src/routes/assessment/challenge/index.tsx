@@ -20,7 +20,6 @@ import cognitive from "../../../schema/challenges/cognitive.json";
 import communication from "../../../schema/challenges/communication.json";
 import learning from "../../../schema/challenges/learning.json";
 import motor from "../../../schema/challenges/motor.json";
-// Import all challenge schemas
 import social from "../../../schema/challenges/social.json";
 
 const challengeMap = {
