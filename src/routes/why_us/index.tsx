@@ -11,7 +11,7 @@ export const Route = createFileRoute("/why_us/")({
 
 const cardData = whyUsIcons;
 
-const whyUsColorScheme = whyUsColorSchemeJson as {
+const colorScheme = whyUsColorSchemeJson as {
 	backgroundGradientFrom: string;
 	backgroundGradientTo: string;
 	topBar: string;
@@ -31,25 +31,22 @@ function WhyUsPage() {
 
 	return (
 		<div
-			className="min-h-screen flex flex-col"
+			className="min-h-screen"
 			style={{
-				background: `linear-gradient(to bottom, ${whyUsColorScheme.backgroundGradientFrom}, ${whyUsColorScheme.backgroundGradientTo})`,
+				background: `linear-gradient(135deg, ${colorScheme.backgroundGradientFrom} 0%, ${colorScheme.backgroundGradientTo} 100%)`,
 			}}
 		>
 			{/* Top Bar */}
 			<header
 				className="py-4 px-6 flex items-center"
-				style={{ background: whyUsColorScheme.topBar }}
+				style={{ background: colorScheme.topBar }}
 			>
 				<span className="text-white text-xl font-semibold">Logo</span>
 			</header>
 
 			{/* WHY US Title */}
 			<section className="text-center my-10">
-				<h2
-					className="text-5xl font-bold"
-					style={{ color: whyUsColorScheme.title }}
-				>
+				<h2 className="text-5xl font-bold" style={{ color: colorScheme.title }}>
 					{staticText.whyUsTitle}
 				</h2>
 			</section>
@@ -65,7 +62,7 @@ function WhyUsPage() {
 						style={{
 							background: "transparent",
 							boxShadow: "none",
-							border: `2px solid ${whyUsColorScheme.cardShadow}`,
+							border: `2px solid ${colorScheme.cardShadow}`,
 							cursor: card.title === "REGISTER" ? "pointer" : undefined,
 						}}
 						onMouseEnter={() => setHovered(index)}
@@ -95,14 +92,11 @@ function WhyUsPage() {
 						</div>
 						<h3
 							className="font-bold text-xl mb-3"
-							style={{ color: whyUsColorScheme.cardTitle }}
+							style={{ color: colorScheme.cardTitle }}
 						>
 							{card.title}
 						</h3>
-						<p
-							className="text-base"
-							style={{ color: whyUsColorScheme.cardText }}
-						>
+						<p className="text-base" style={{ color: colorScheme.cardText }}>
 							{card.description}
 						</p>
 					</div>
@@ -112,18 +106,18 @@ function WhyUsPage() {
 			{/* Contact Section */}
 			<footer
 				className="px-8 py-8 text-center mt-auto"
-				style={{ background: whyUsColorScheme.contactBg }}
+				style={{ background: colorScheme.contactBg }}
 			>
 				<h3
 					className="font-bold text-lg mb-2"
-					style={{ color: whyUsColorScheme.contactTitle }}
+					style={{ color: colorScheme.contactTitle }}
 				>
 					{staticText.contactTitle}
 				</h3>
-				<p style={{ color: whyUsColorScheme.contactText }}>
+				<p style={{ color: colorScheme.contactText }}>
 					{staticText.contactPhone}
 				</p>
-				<p style={{ color: whyUsColorScheme.contactText }}>
+				<p style={{ color: colorScheme.contactText }}>
 					{staticText.contactAddress}
 				</p>
 			</footer>
