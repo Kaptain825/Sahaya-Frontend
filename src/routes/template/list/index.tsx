@@ -65,12 +65,34 @@ function AssessmentQuestionListPage() {
 			updatedAt: new Date(Date.now() - 3600000).toISOString(),
 		},
 	]);
+	const [templateQuestions, setTemplateQuestions] = useState<any[]>([]);
+	const [modal, setModal] = useState<null | {
+		type: "template" | "api";
+		data: any;
+	}>(null);
 	const [sortKey, setSortKey] = useState<"challengeType" | "updatedAt">(
 		"challengeType",
 	);
 	const [isScrolling, setIsScrolling] = useState(false);
 	const navigate = useNavigate();
 	const scrollRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const stored = localStorage.getItem("templateQuestions");
+		if (stored) {
+			setTemplateQuestions(JSON.parse(stored));
+		}
+	}, []);
+
+	const handleDeleteTemplate = (createdAt: string) => {
+		if (window.confirm("Are you sure you want to delete this question?")) {
+			const updated = templateQuestions.filter(
+				(q) => q.createdAt !== createdAt,
+			);
+			setTemplateQuestions(updated);
+			localStorage.setItem("templateQuestions", JSON.stringify(updated));
+		}
+	};
 
 	useEffect(() => {
 		fetchQuestions();
@@ -82,65 +104,9 @@ function AssessmentQuestionListPage() {
 			const data = await response.json();
 			if (Array.isArray(data) && data.length > 0) {
 				setQuestions(data);
-			} else {
-				// Keep fake data if API returns empty
-				setQuestions([
-					{
-						id: "1",
-						questionText: "What is the child's preferred communication method?",
-						challengeType: "Communication",
-						createdBy: "admin",
-						updatedAt: new Date().toISOString(),
-					},
-					{
-						id: "2",
-						questionText: "Does the child require assistance with mobility?",
-						challengeType: "Mobility",
-						createdBy: "admin",
-						updatedAt: new Date(Date.now() - 86400000).toISOString(),
-					},
-					{
-						id: "3",
-						questionText: "Is the child sensitive to loud noises?",
-						challengeType: "Sensory",
-						createdBy: "admin",
-						updatedAt: new Date(Date.now() - 3600000).toISOString(),
-					},
-				]);
 			}
 		} catch (err) {
 			console.error("Error fetching questions", err);
-			// Show fake data on error
-			setQuestions([
-				{
-					id: "1",
-					questionText: "What is the child's preferred communication method?",
-					challengeType: "Communication",
-					createdBy: "admin",
-					updatedAt: new Date().toISOString(),
-				},
-				{
-					id: "2",
-					questionText: "Does the child require assistance with mobility?",
-					challengeType: "Mobility",
-					createdBy: "admin",
-					updatedAt: new Date(Date.now() - 86400000).toISOString(),
-				},
-				{
-					id: "3",
-					questionText: "Is the child sensitive to loud noises?",
-					challengeType: "Sensory",
-					createdBy: "admin",
-					updatedAt: new Date(Date.now() - 3600000).toISOString(),
-				},
-			]);
-		}
-	};
-
-	const handleDelete = async (id: string) => {
-		if (window.confirm("Are you sure you want to delete this question?")) {
-			await fetch(`/api/assessment/questions/${id}`, { method: "DELETE" });
-			fetchQuestions();
 		}
 	};
 
@@ -151,11 +117,17 @@ function AssessmentQuestionListPage() {
 		setQuestions(sorted);
 	};
 
-	// Overlay logic for scroll
 	const handleScroll = () => {
 		if (scrollRef.current) {
 			const { scrollTop } = scrollRef.current;
 			setIsScrolling(scrollTop > 0);
+		}
+	};
+
+	const handleDelete = async (id: string) => {
+		if (window.confirm("Are you sure you want to delete this question?")) {
+			await fetch(`/api/assessment/questions/${id}`, { method: "DELETE" });
+			fetchQuestions();
 		}
 	};
 
@@ -206,7 +178,7 @@ function AssessmentQuestionListPage() {
 				</select>
 			</div>
 
-			{/* Question Cards */}
+			{/* Question Cards - Template version only */}
 			<div className="relative">
 				<div
 					ref={scrollRef}
