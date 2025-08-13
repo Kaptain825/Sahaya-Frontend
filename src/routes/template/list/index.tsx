@@ -280,6 +280,20 @@ function AssessmentQuestionListPage() {
 						style={{
 							background: whyUs.cardBg,
 							boxShadow: `0 2px 8px ${whyUs.cardShadow}`,
+							transition: "all 0.3s ease-in-out",
+							transform: "scale(1)",
+							"&:hover": {
+								transform: "scale(1.03)",
+								boxShadow: `0 8px 16px ${whyUs.cardShadow}`,
+							},
+						}}
+						onMouseEnter={(e) => {
+							e.currentTarget.style.transform = "scale(1.03)";
+							e.currentTarget.style.boxShadow = `0 8px 16px ${whyUs.cardShadow}`;
+						}}
+						onMouseLeave={(e) => {
+							e.currentTarget.style.transform = "scale(1)";
+							e.currentTarget.style.boxShadow = `0 2px 8px ${whyUs.cardShadow}`;
 						}}
 						onClick={() => setModal({ type: "template", data: q })}
 						onKeyDown={(e) => {
@@ -350,6 +364,13 @@ function AssessmentQuestionListPage() {
 						style={{
 							background: whyUs.cardBg,
 							boxShadow: `0 2px 8px ${whyUs.cardShadow}`,
+							transition:
+								"transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+							transform: "scale(1)",
+							"&:hover": {
+								transform: "scale(1.02)",
+								boxShadow: `0 4px 12px ${whyUs.cardShadow}`,
+							},
 						}}
 						onClick={() => setModal({ type: "api", data: q })}
 						onKeyDown={(e) => {
