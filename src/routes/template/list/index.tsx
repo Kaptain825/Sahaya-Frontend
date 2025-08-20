@@ -44,29 +44,7 @@ export const Route = createFileRoute("/template/list/")({
 export default Route;
 
 function AssessmentQuestionListPage() {
-	const [questions, setQuestions] = useState<AssessmentQuestion[]>([
-		{
-			id: "1",
-			questionText: "What is the child's preferred communication method?",
-			challengeType: "Communication",
-			createdBy: "admin",
-			updatedAt: new Date().toISOString(),
-		},
-		{
-			id: "2",
-			questionText: "Does the child require assistance with mobility?",
-			challengeType: "Mobility",
-			createdBy: "admin",
-			updatedAt: new Date(Date.now() - 86400000).toISOString(),
-		},
-		{
-			id: "3",
-			questionText: "Is the child sensitive to loud noises?",
-			challengeType: "Sensory",
-			createdBy: "admin",
-			updatedAt: new Date(Date.now() - 3600000).toISOString(),
-		},
-	]);
+	const [questions, setQuestions] = useState<AssessmentQuestion[]>([]);
 	interface TemplateQuestion {
 		question: string;
 		challenge: string;
@@ -118,57 +96,11 @@ function AssessmentQuestionListPage() {
 			if (Array.isArray(data) && data.length > 0) {
 				setQuestions(data);
 			} else {
-				// Keep fake data if API returns empty
-				setQuestions([
-					{
-						id: "1",
-						questionText: "What is the child's preferred communication method?",
-						challengeType: "Communication",
-						createdBy: "admin",
-						updatedAt: new Date().toISOString(),
-					},
-					{
-						id: "2",
-						questionText: "Does the child require assistance with mobility?",
-						challengeType: "Mobility",
-						createdBy: "admin",
-						updatedAt: new Date(Date.now() - 86400000).toISOString(),
-					},
-					{
-						id: "3",
-						questionText: "Is the child sensitive to loud noises?",
-						challengeType: "Sensory",
-						createdBy: "admin",
-						updatedAt: new Date(Date.now() - 3600000).toISOString(),
-					},
-				]);
+				setQuestions([]); // No hardcoded fallback
 			}
 		} catch (err) {
 			console.error("Error fetching questions", err);
-			// Show fake data on error
-			setQuestions([
-				{
-					id: "1",
-					questionText: "What is the child's preferred communication method?",
-					challengeType: "Communication",
-					createdBy: "admin",
-					updatedAt: new Date().toISOString(),
-				},
-				{
-					id: "2",
-					questionText: "Does the child require assistance with mobility?",
-					challengeType: "Mobility",
-					createdBy: "admin",
-					updatedAt: new Date(Date.now() - 86400000).toISOString(),
-				},
-				{
-					id: "3",
-					questionText: "Is the child sensitive to loud noises?",
-					challengeType: "Sensory",
-					createdBy: "admin",
-					updatedAt: new Date(Date.now() - 3600000).toISOString(),
-				},
-			]);
+			setQuestions([]); // No hardcoded fallback on error
 		}
 	};
 
@@ -190,23 +122,58 @@ function AssessmentQuestionListPage() {
 		<div
 			className="min-h-screen p-6"
 			style={{
-				background: `linear-gradient(135deg, ${whyUs.backgroundGradientFrom}, ${whyUs.backgroundGradientTo})`,
+				background: `linear-gradient(120deg, #e1e9f2, #d7e3ee, #d7dfea, #f0f9ff, #ecfdf5)`, // Complementary soft gradient
+				backgroundSize: "400% 400%",
+				animation: "gradientShift 15s ease infinite", // Breathing animation
 				minHeight: "100vh",
+				position: "relative", // Ensure floating shapes are positioned correctly
+				overflow: "hidden", // Prevent floating shapes from affecting layout
 			}}
 		>
+			{/* Floating Shapes */}
+			<div
+				style={{
+					content: '""',
+					position: "absolute",
+					top: "-50px",
+					left: "-50px",
+					width: "200px",
+					height: "200px",
+					background: "rgba(248, 250, 252, 0.3)",
+					borderRadius: "50%",
+					animation: "floaty 30s ease-in-out infinite",
+					filter: "blur(60px)",
+					zIndex: -1,
+				}}
+			/>
+			<div
+				style={{
+					content: '""',
+					position: "absolute",
+					bottom: "-50px",
+					right: "-50px",
+					width: "200px",
+					height: "200px",
+					background: "rgba(241, 245, 249, 0.3)",
+					borderRadius: "50%",
+					animation: "floaty 40s ease-in-out infinite",
+					filter: "blur(60px)",
+					zIndex: -1,
+				}}
+			/>
 			{/* Header */}
 			<div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
 				<h1
 					className="text-4xl font-bold"
 					style={{
-						color: whyUs.cardTitle,
+						color: whyUs.textline,
 						letterSpacing: 0.5,
 						padding: "8px 24px",
 						borderRadius: 8,
 						background: "transparent",
 						marginRight: 24,
 						marginBottom: 0,
-						borderBottom: `3px solid ${whyUs.cardTitle}`,
+						borderBottom: `3px solid ${whyUs.textline}`,
 						display: "inline-block",
 					}}
 				>
@@ -278,47 +245,39 @@ function AssessmentQuestionListPage() {
 						type="button"
 						className="rounded shadow-lg p-4 flex flex-col justify-between cursor-pointer text-left"
 						style={{
-							background: whyUs.cardBg,
-							boxShadow: `0 2px 8px ${whyUs.cardShadow}`,
-							transition: "all 0.3s ease-in-out",
+							background: "#b2e1db", // Light gray background
+							boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)", // Subtle shadow
+							borderRadius: "16px", // Rounded corners
+							transition:
+								"transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
 							transform: "scale(1)",
-							"&:hover": {
-								transform: "scale(1.03)",
-								boxShadow: `0 8px 16px ${whyUs.cardShadow}`,
-							},
+							border: "1px solid rgba(0, 0, 0, 0.1)", // Subtle border
 						}}
 						onMouseEnter={(e) => {
 							e.currentTarget.style.transform = "scale(1.03)";
-							e.currentTarget.style.boxShadow = `0 8px 16px ${whyUs.cardShadow}`;
+							e.currentTarget.style.boxShadow =
+								"0 8px 25px rgba(0, 0, 0, 0.15)";
 						}}
 						onMouseLeave={(e) => {
 							e.currentTarget.style.transform = "scale(1)";
-							e.currentTarget.style.boxShadow = `0 2px 8px ${whyUs.cardShadow}`;
+							e.currentTarget.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
 						}}
 						onClick={() => setModal({ type: "template", data: q })}
-						onKeyDown={(e) => {
-							if (e.key === "Enter" || e.key === " ") {
-								setModal({ type: "template", data: q });
-							}
-						}}
 					>
 						<div>
 							<h2
 								className="text-xl font-bold mb-2"
-								style={{ color: whyUs.cardTitle }}
+								style={{ color: "#374151" }} // Dark gray text for contrast
 							>
 								{q.question}
 							</h2>
-							<p className="text-sm" style={{ color: whyUs.cardText }}>
+							<p className="text-sm" style={{ color: "#6b7280" }}>
 								Challenge: {q.challenge}
 							</p>
-							<p className="text-sm" style={{ color: whyUs.cardText }}>
+							<p className="text-sm" style={{ color: "#6b7280" }}>
 								Age Band: {q.ageBand}
 							</p>
-							<p
-								className="text-sm"
-								style={{ color: whyUs.cardText, opacity: 0.7 }}
-							>
+							<p className="text-sm" style={{ color: "#9ca3af", opacity: 0.8 }}>
 								Created: {new Date(q.createdAt).toLocaleString()}
 							</p>
 						</div>
@@ -329,12 +288,11 @@ function AssessmentQuestionListPage() {
 						>
 							<button
 								type="button"
-								onClick={(e) => {
-									e.stopPropagation();
-									alert("Edit for template questions not implemented yet.");
-								}}
 								className="px-3 py-1 text-white rounded transition-all duration-200 hover:brightness-90 hover:scale-105"
-								style={{ background: whyUs.cardTitle }}
+								style={{
+									background: "#374151",
+									color: "#ffffff",
+								}}
 							>
 								Edit
 							</button>
@@ -346,8 +304,8 @@ function AssessmentQuestionListPage() {
 								}}
 								className="px-3 py-1 text-white rounded transition-all duration-200 hover:brightness-90 hover:scale-105"
 								style={{
-									background: whyUs.deleteButton,
-									color: whyUs.cardText,
+									background: "#ef4444",
+									color: "#ffffff",
 								}}
 							>
 								Delete
@@ -362,56 +320,57 @@ function AssessmentQuestionListPage() {
 						type="button"
 						className="rounded shadow-lg p-4 flex flex-col justify-between cursor-pointer text-left"
 						style={{
-							background: whyUs.cardBg,
-							boxShadow: `0 2px 8px ${whyUs.cardShadow}`,
+							background: "#7fccc3", // Light gray background
+							boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)", // Subtle shadow
+							borderRadius: "16px", // Rounded corners
 							transition:
 								"transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
 							transform: "scale(1)",
-							"&:hover": {
-								transform: "scale(1.02)",
-								boxShadow: `0 4px 12px ${whyUs.cardShadow}`,
-							},
+							border: "1px solid rgba(0, 0, 0, 0.1)", // Subtle border
+						}}
+						onMouseEnter={(e) => {
+							e.currentTarget.style.transform = "scale(1.02)";
+							e.currentTarget.style.boxShadow =
+								"0 6px 20px rgba(0, 0, 0, 0.15)";
+						}}
+						onMouseLeave={(e) => {
+							e.currentTarget.style.transform = "scale(1)";
+							e.currentTarget.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
 						}}
 						onClick={() => setModal({ type: "api", data: q })}
-						onKeyDown={(e) => {
-							if (e.key === "Enter" || e.key === " ") {
-								setModal({ type: "api", data: q });
-							}
-						}}
 					>
 						<div>
 							<h2
 								className="text-xl font-bold mb-2"
-								style={{ color: whyUs.cardTitle }}
+								style={{ color: "#2d3748" }} // Dark gray for good contrast
 							>
 								{q.questionText}
 							</h2>
-							<p className="text-sm" style={{ color: whyUs.cardText }}>
+							<p className="text-sm" style={{ color: "#4a5568" }}>
 								Challenge: {q.challengeType}
 							</p>
-							{/* Age Band not available in API questions, show placeholder */}
-							<p className="text-sm" style={{ color: whyUs.cardText }}>
-								Age Band: <span className="italic text-gray-400">N/A</span>
+							<p className="text-sm" style={{ color: "#4a5568" }}>
+								Age Band:{" "}
+								<span className="italic" style={{ color: "#9ca3af" }}>
+									N/A
+								</span>
 							</p>
-							<p
-								className="text-sm"
-								style={{ color: whyUs.cardText, opacity: 0.7 }}
-							>
+							<p className="text-sm" style={{ color: "#6b7280", opacity: 0.8 }}>
 								Last updated: {new Date(q.updatedAt).toLocaleString()}
 							</p>
 						</div>
 						<div
 							className="flex justify-end gap-2 mt-4"
 							onClick={(e) => e.stopPropagation()}
-							onKeyUp={(e) => e.stopPropagation()}
+							onKeyDown={(e) => e.stopPropagation()}
 						>
 							<button
 								type="button"
-								onClick={() =>
-									navigate({ to: `/assessment/questions/edit/${q.id}` })
-								}
 								className="px-3 py-1 text-white rounded transition-all duration-200 hover:brightness-90 hover:scale-105"
-								style={{ background: whyUs.cardTitle }}
+								style={{
+									background: whyUs.contactTitle,
+									color: whyUs.contactTitle,
+								}}
 							>
 								Edit
 							</button>
@@ -420,8 +379,8 @@ function AssessmentQuestionListPage() {
 								onClick={() => handleDelete(q.id)}
 								className="px-3 py-1 text-white rounded transition-all duration-200 hover:brightness-90 hover:scale-105"
 								style={{
-									background: whyUs.deleteButton,
-									color: whyUs.cardText,
+									background: "#ef4444",
+									color: "#ffffff",
 								}}
 							>
 								Delete
@@ -488,23 +447,23 @@ function AssessmentQuestionListPage() {
 							onClick={() => setModal(null)}
 							style={{
 								position: "absolute",
-								top: 12,
-								right: 24,
+								top: 8,
+								right: 16,
 								background: "transparent",
-								border: `2px solid ${whyUs.deleteButton}`,
-								fontSize: 22,
-								fontWeight: 700,
+								border: `1.5px solid ${whyUs.deleteButton}`,
+								fontSize: 16,
+								fontWeight: 600,
 								color: whyUs.cardText,
 								cursor: "pointer",
-								borderRadius: 8,
+								borderRadius: 6,
 								transition: "background 0.18s, color 0.18s, border 0.18s",
-								padding: "2px 22px 2px 22px",
-								minWidth: 56,
-								minHeight: 36,
+								padding: "2px 12px",
+								minWidth: 36,
+								minHeight: 28,
 								display: "flex",
 								alignItems: "center",
 								justifyContent: "center",
-								letterSpacing: 2,
+								letterSpacing: 1,
 								zIndex: 10,
 							}}
 							onMouseEnter={(e) => {
@@ -513,7 +472,7 @@ function AssessmentQuestionListPage() {
 								(e.currentTarget as HTMLButtonElement).style.color =
 									whyUs.cardText;
 								(e.currentTarget as HTMLButtonElement).style.border =
-									`2px solid ${whyUs.contactBg}`;
+									`1.5px solid ${whyUs.contactBg}`;
 							}}
 							onMouseLeave={(e) => {
 								(e.currentTarget as HTMLButtonElement).style.background =
@@ -521,7 +480,7 @@ function AssessmentQuestionListPage() {
 								(e.currentTarget as HTMLButtonElement).style.color =
 									whyUs.cardText;
 								(e.currentTarget as HTMLButtonElement).style.border =
-									`2px solid ${whyUs.deleteButton}`;
+									`1.5px solid ${whyUs.deleteButton}`;
 							}}
 						>
 							X
@@ -533,7 +492,7 @@ function AssessmentQuestionListPage() {
 									fontWeight: 700,
 									fontSize: 22,
 									marginBottom: 12,
-									color: whyUs.cardTitle,
+									color: whyUs.cardText,
 								}}
 							>
 								{modal.type === "template"
@@ -544,7 +503,7 @@ function AssessmentQuestionListPage() {
 							<p
 								style={{
 									fontWeight: 500,
-									color: whyUs.cardTitle,
+									color: whyUs.cardText,
 									marginBottom: 8,
 								}}
 							>
@@ -556,7 +515,7 @@ function AssessmentQuestionListPage() {
 							<p
 								style={{
 									fontWeight: 500,
-									color: whyUs.cardTitle,
+									color: whyUs.cardText,
 									marginBottom: 8,
 								}}
 							>
@@ -612,3 +571,19 @@ function AssessmentQuestionListPage() {
 		</div>
 	);
 }
+
+// Add animations to the global styles
+const style = document.createElement("style");
+style.textContent = `
+	@keyframes gradientShift {
+		0% { background-position: 0% 50%; }
+		50% { background-position: 100% 50%; }
+		100% { background-position: 0% 50%; }
+	}
+	@keyframes floaty {
+		0%   { transform: translate(0, 0) scale(1); }
+		50%  { transform: translate(100px, 80px) scale(1.2); }
+		100% { transform: translate(0, 0) scale(1); }
+	}
+`;
+document.head.appendChild(style);
