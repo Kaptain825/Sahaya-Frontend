@@ -200,7 +200,7 @@ function AssessmentQuestionListPage() {
 						value={sortKey}
 						onChange={handleSortChange}
 						style={{
-							padding: "9px 22px",
+							padding: "9px 10px",
 							borderRadius: 8,
 							border: `2px solid ${whyUs.cardTitle}`,
 							background: whyUs.cardBg,
@@ -573,17 +573,17 @@ function AssessmentQuestionListPage() {
 }
 
 // Add animations to the global styles
-const style = document.createElement("style");
-style.textContent = `
-	@keyframes gradientShift {
-		0% { background-position: 0% 50%; }
-		50% { background-position: 100% 50%; }
-		100% { background-position: 0% 50%; }
-	}
-	@keyframes floaty {
-		0%   { transform: translate(0, 0) scale(1); }
-		50%  { transform: translate(100px, 80px) scale(1.2); }
-		100% { transform: translate(0, 0) scale(1); }
-	}
-`;
-document.head.appendChild(style);
+// const style = document.createElement("style");
+// style.textContent = `
+// 	@keyframes gradientShift {
+// 		0% { background-position: 0% 50%; }
+// 		50% { background-position: 100% 50%; }
+// 		100% { background-position: 0% 50%; }
+// 	}
+// 	@keyframes floaty {
+// 		0%   { transform: translate(0, 0) scale(1); }
+// 		50%  { transform: translate(100px, 80px) scale(1.2); }
+// 		100% { transform: translate(0, 0) scale(1); }
+// 	}
+// `;
+// document.head.appendChild(style);
