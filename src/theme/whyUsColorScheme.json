@@ -10,5 +10,6 @@
 	"contactBg": "#f0cfd0",
 	"contactTitle": "#33aa88",
 	"contactText": "#333333",
-	"deleteButton": "#fd6f3f"
+	"deleteButton": "#fd6f3f",
+	"textline": "black"
 }
