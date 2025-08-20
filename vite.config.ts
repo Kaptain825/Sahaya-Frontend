@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
+import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 const config = defineConfig({
@@ -10,7 +11,8 @@ const config = defineConfig({
       projects: ['./tsconfig.json'],
     }),
     tailwindcss(),
-    tanstackStart(),
+    tanstackStart({ customViteReactPlugin: true, target: "bun" }),
+    react(),
   ],
 })
 
