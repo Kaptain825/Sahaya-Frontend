@@ -1,20 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import staticText from "../../../text/staticText.json";
-import colorSchemeJson from "../../../theme/colorScheme.json";
 import whyUsColorScheme from "../../../theme/whyUsColorScheme.json";
 
-interface ColorScheme {
-	background: string;
-	cardTop: string;
-	cardBody: string;
-	primary: string;
-	primaryHover: string;
-	textMain: string;
-	link: string;
-}
-
-const colorScheme = colorSchemeJson as ColorScheme;
 const whyUs = whyUsColorScheme as {
 	backgroundGradientFrom: string;
 	backgroundGradientTo: string;
@@ -27,6 +14,8 @@ const whyUs = whyUsColorScheme as {
 	contactBg: string;
 	contactTitle: string;
 	contactText: string;
+	textline?: string; // Added optional property
+	deleteButton?: string; // Added optional property
 };
 
 interface AssessmentQuestion {
@@ -35,6 +24,20 @@ interface AssessmentQuestion {
 	challengeType: string;
 	createdBy: string;
 	updatedAt: string;
+}
+
+// Corrected ModalData usage and property mappings
+interface ModalData {
+	templateId?: string;
+	questionId?: string;
+	question?: string;
+	challenge?: string;
+	challengeType?: string;
+	createdAt?: string;
+	updatedAt?: string;
+	type?: string;
+	options?: string[];
+	ageBand?: string;
 }
 
 export const Route = createFileRoute("/template/list/")({
@@ -59,7 +62,10 @@ function AssessmentQuestionListPage() {
 	>([]);
 	const [modal, setModal] = useState<null | {
 		type: "template" | "api";
-		data: any;
+		data: {
+			templateId?: string;
+			questionId?: string;
+		};
 	}>(null);
 	const [sortKey, setSortKey] = useState<"challengeType" | "updatedAt">(
 		"challengeType",
@@ -91,8 +97,13 @@ function AssessmentQuestionListPage() {
 
 	const fetchQuestions = async () => {
 		try {
-			const response = await fetch("/api/assessment/questions");
+			const response = await fetch(
+				"https://68b2bc6cc28940c9e69d3990.mockapi.io/api/v1/Getall",
+			);
 			const data = await response.json();
+			const firstItem = data[0];
+			console.log("Keys of first item:", Object.keys(firstItem));
+			console.log("First item data:", firstItem.ageBand);
 			if (Array.isArray(data) && data.length > 0) {
 				setQuestions(data);
 			} else {
@@ -106,7 +117,10 @@ function AssessmentQuestionListPage() {
 
 	const handleDelete = async (id: string) => {
 		if (window.confirm("Are you sure you want to delete this question?")) {
-			await fetch(`/api/assessment/questions/${id}`, { method: "DELETE" });
+			await fetch(
+				`https://68b2bc6cc28940c9e69d3990.mockapi.io/api/v1/Getall/${id}`,
+				{ method: "DELETE" },
+			);
 			fetchQuestions(); // refresh list
 		}
 	};
@@ -122,7 +136,8 @@ function AssessmentQuestionListPage() {
 		<div
 			className="min-h-screen p-6"
 			style={{
-				background: `linear-gradient(120deg, #e1e9f2, #d7e3ee, #d7dfea, #f0f9ff, #ecfdf5)`, // Complementary soft gradient
+				background:
+					"linear-gradient(120deg, #e1e9f2, #d7e3ee, #d7dfea, #f0f9ff, #ecfdf5)", // Complementary soft gradient
 				backgroundSize: "400% 400%",
 				animation: "gradientShift 15s ease infinite", // Breathing animation
 				minHeight: "100vh",
@@ -262,7 +277,17 @@ function AssessmentQuestionListPage() {
 							e.currentTarget.style.transform = "scale(1)";
 							e.currentTarget.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
 						}}
-						onClick={() => setModal({ type: "template", data: q })}
+						onClick={() =>
+							setModal({
+								type: "template",
+								data: {
+									templateId: q.createdAt, // Assuming createdAt is unique
+									question: q.question,
+									challenge: q.challenge,
+									ageBand: q.ageBand,
+								},
+							})
+						}
 					>
 						<div>
 							<h2
@@ -337,7 +362,19 @@ function AssessmentQuestionListPage() {
 							e.currentTarget.style.transform = "scale(1)";
 							e.currentTarget.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
 						}}
-						onClick={() => setModal({ type: "api", data: q })}
+						onClick={() =>
+							setModal({
+								type: "api",
+								data: {
+									questionId: q.id,
+									question: q.questionText,
+									challengeType: q.challengeType,
+									createdAt: q.createdAt,
+									updatedAt: q.updatedAt,
+									ageBand: q.ageBand, // <-- add this
+								},
+							})
+						}
 					>
 						<div>
 							<h2
@@ -350,10 +387,7 @@ function AssessmentQuestionListPage() {
 								Challenge: {q.challengeType}
 							</p>
 							<p className="text-sm" style={{ color: "#4a5568" }}>
-								Age Band:{" "}
-								<span className="italic" style={{ color: "#9ca3af" }}>
-									N/A
-								</span>
+								Age Band: {q.ageBand}
 							</p>
 							<p className="text-sm" style={{ color: "#6b7280", opacity: 0.8 }}>
 								Last updated: {new Date(q.updatedAt).toLocaleString()}
@@ -369,7 +403,7 @@ function AssessmentQuestionListPage() {
 								className="px-3 py-1 text-white rounded transition-all duration-200 hover:brightness-90 hover:scale-105"
 								style={{
 									background: whyUs.contactTitle,
-									color: whyUs.contactTitle,
+									color: "#ffffff",
 								}}
 							>
 								Edit
@@ -520,11 +554,9 @@ function AssessmentQuestionListPage() {
 								}}
 							>
 								Age Band:{" "}
-								{modal.type === "template" ? (
-									modal.data.ageBand
-								) : (
-									<span style={{ color: "#aaa" }}>N/A</span>
-								)}
+								{modal.type === "template"
+									? modal.data.ageBand
+									: modal.data.ageBand}
 							</p>
 							<p style={{ color: "#888", marginBottom: 18 }}>
 								{modal.type === "template"
@@ -543,7 +575,7 @@ function AssessmentQuestionListPage() {
 										</div>
 										{modal.data.options.map((opt: string, idx: number) => (
 											<div
-												key={idx}
+												key={`${opt}-${idx}`}
 												style={{
 													background: whyUs.cardBg,
 													borderRadius: 8,
@@ -571,19 +603,3 @@ function AssessmentQuestionListPage() {
 		</div>
 	);
 }
-
-// Add animations to the global styles
-// const style = document.createElement("style");
-// style.textContent = `
-// 	@keyframes gradientShift {
-// 		0% { background-position: 0% 50%; }
-// 		50% { background-position: 100% 50%; }
-// 		100% { background-position: 0% 50%; }
-// 	}
-// 	@keyframes floaty {
-// 		0%   { transform: translate(0, 0) scale(1); }
-// 		50%  { transform: translate(100px, 80px) scale(1.2); }
-// 		100% { transform: translate(0, 0) scale(1); }
-// 	}
-// `;
-// document.head.appendChild(style);

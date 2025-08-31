@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import childInfoFormSchema from "../../../../schema/childInfoFormSchema.json";
 import colorSchemeJson from "../../../../theme/colorScheme.json";
 
@@ -68,24 +69,51 @@ function RouteComponent() {
 		else if (step === 3 && form.type) setStep(4);
 	};
 
-	const handleCreate = () => {
-		const newQuestion = {
-			challenge: form.challenge,
-			ageBand: form.ageBand,
-			type: form.type,
-			question: questionText,
-			options:
-				form.type === "radio"
-					? radioOptions.filter((o) => o.trim())
-					: undefined,
-			createdAt: new Date().toISOString(),
+	const handleCreate = async () => {
+		// map challenge → categoryId (number as string)
+		const categoryMap: Record<string, string> = {
+			"Social Interaction": "11111111-1111-1111-1111-111111111111",
+			"Cognitive Skills": "22222222-2222-2222-2222-222222222222",
+			Communication: "33333333-3333-3333-3333-333333333333",
+			"Motor Skills": "44444444-4444-4444-4444-444444444444",
+			"Behavioral Issues": "55555555-5555-5555-5555-555555555555",
+			"Learning Difficulties": "66666666-6666-6666-6666-666666666666",
 		};
-		const prev = JSON.parse(localStorage.getItem("templateQuestions") || "[]");
-		localStorage.setItem(
-			"templateQuestions",
-			JSON.stringify([newQuestion, ...prev]),
-		);
-		navigate({ to: "/template/list" });
+
+		const newQuestionPayload = {
+			questionSeq: 0, // backend can update sequence
+			questionType: form.type, // radio | rating | boolean | text
+			questionLabel: questionText, // you might keep label same as text
+			questionText: questionText,
+			questionCategoryId:
+				categoryMap[form.challenge] ?? "00000000-0000-0000-0000-000000000000",
+			questionVisibleRuleId: "string",
+			questionVisibleRuleExist: true,
+			questionComplexityLevel: 0,
+			deleted: true,
+		};
+
+		try {
+			const response = await fetch("https://eo5hwkr1qlzrgls.m.pipedream.net", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(newQuestionPayload),
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to create question");
+			}
+
+			const saved = await response.json();
+			console.log("Question saved:", saved);
+
+			navigate({ to: "/template/list" });
+		} catch (err) {
+			console.error(err);
+			alert("Error creating question. Please try again.");
+		}
 	};
 
 	const addRadioOption = () => setRadioOptions((opts) => [...opts, ""]);
@@ -97,7 +125,8 @@ function RouteComponent() {
 		<div
 			className="min-h-screen flex flex-col items-center justify-start"
 			style={{
-				background: colorScheme.background,
+				background:
+					"linear-gradient(120deg, #e1e9f2, #d7e3ee, #d7dfea, #f0f9ff, #ecfdf5)",
 				minHeight: "100vh",
 				paddingBottom: 40,
 			}}
@@ -172,7 +201,7 @@ function RouteComponent() {
 			<header
 				className="w-full flex flex-col items-center justify-center shadow-sm"
 				style={{
-					background: colorScheme.cardTop,
+					background: "#2a9d8f",
 					minHeight: 72,
 					borderBottom: `2px solid ${colorScheme.primary}22`,
 				}}
