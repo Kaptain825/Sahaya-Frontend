@@ -2,7 +2,7 @@ import { materialRenderers } from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import GoogleButton from "react-google-button";
+import { GoogleButton } from "react-google-button";
 
 import signupSchema from "../../schema/signupFormSchema.json";
 import signupUiSchema from "../../schema/signupUiSchema.json";

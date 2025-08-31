@@ -2,7 +2,7 @@ import { materialRenderers } from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import GoogleButton from "react-google-button";
+import { GoogleButton } from "react-google-button";
 
 import loginSchema from "../../schema/loginFormSchema.json";
 import loginUiSchema from "../../schema/loginUiSchema.json";
@@ -205,7 +205,7 @@ export default function LoginPage() {
 								className="font-medium"
 								style={{ color: colorScheme.link }}
 							>
-									 up
+								up
 							</a>
 						</p>
 					</div>
