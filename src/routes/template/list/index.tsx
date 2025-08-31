@@ -14,8 +14,8 @@ const whyUs = whyUsColorScheme as {
 	contactBg: string;
 	contactTitle: string;
 	contactText: string;
-	textline?: string; // Added optional property
-	deleteButton?: string; // Added optional property
+	textline?: string;
+	deleteButton?: string;
 };
 
 interface AssessmentQuestion {
@@ -98,27 +98,28 @@ function AssessmentQuestionListPage() {
 	const fetchQuestions = async () => {
 		try {
 			const response = await fetch(
-				"https://68b2bc6cc28940c9e69d3990.mockapi.io/api/v1/Getall",
+				"https://68b2bc6cc28940c9e69d3990.mockapi.io/api/v1/Template",
 			);
 			const data = await response.json();
-			const firstItem = data[0];
-			console.log("Keys of first item:", Object.keys(firstItem));
-			console.log("First item data:", firstItem.ageBand);
+
+			console.log("API Response:", data); // Debug log
+			console.log("First item:", data[0]); // Debug log
+
 			if (Array.isArray(data) && data.length > 0) {
 				setQuestions(data);
 			} else {
-				setQuestions([]); // No hardcoded fallback
+				setQuestions([]);
 			}
 		} catch (err) {
 			console.error("Error fetching questions", err);
-			setQuestions([]); // No hardcoded fallback on error
+			setQuestions([]);
 		}
 	};
 
 	const handleDelete = async (id: string) => {
 		if (window.confirm("Are you sure you want to delete this question?")) {
 			await fetch(
-				`https://68b2bc6cc28940c9e69d3990.mockapi.io/api/v1/Getall/${id}`,
+				`https://68b2bc6cc28940c9e69d3990.mockapi.io/api/v1/Template/${id}`,
 				{ method: "DELETE" },
 			);
 			fetchQuestions(); // refresh list
@@ -215,7 +216,7 @@ function AssessmentQuestionListPage() {
 						value={sortKey}
 						onChange={handleSortChange}
 						style={{
-							padding: "9px 10px",
+							padding: "9px 22px",
 							borderRadius: 8,
 							border: `2px solid ${whyUs.cardTitle}`,
 							background: whyUs.cardBg,
