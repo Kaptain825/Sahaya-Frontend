@@ -7,15 +7,28 @@ import GoogleButton from "react-google-button";
 import loginSchema from "../../schema/loginFormSchema.json";
 import loginUiSchema from "../../schema/loginUiSchema.json";
 import staticText from "../../text/staticText.json";
-import colorSchemeJson from "../../theme/colorScheme.json";
+import colorSchemeJson from "../../theme/whyUsColorScheme.json";
 
 interface ColorScheme {
-	background: string;
-	cardTop: string;
-	cardBody: string;
-	primary: string;
+	backgroundGradientFrom: string;
+	backgroundGradientTo: string;
+	topBar: string;
+	title: string;
+	cardBg: string;
+	cardTitle: string;
+	cardText: string;
+	cardShadow: string;
+	contactBg: string;
+	contactTitle: string;
+	contactTitleDark: string;
+	contactText: string;
+	deleteButton: string;
+	textline: string;
 	primaryHover: string;
+	primary: string;
+	cardTop: string;
 	textMain: string;
+	cardBody: string;
 	link: string;
 }
 
@@ -71,7 +84,7 @@ export default function LoginPage() {
 			| React.MouseEvent<HTMLButtonElement>
 			| React.FocusEvent<HTMLButtonElement>,
 	) => {
-		e.currentTarget.style.background = colorScheme.primaryHover;
+		e.currentTarget.style.background = colorScheme.contactTitleDark;
 	};
 
 	const handleButtonOut = (
@@ -79,7 +92,7 @@ export default function LoginPage() {
 			| React.MouseEvent<HTMLButtonElement>
 			| React.FocusEvent<HTMLButtonElement>,
 	) => {
-		e.currentTarget.style.background = colorScheme.primary;
+		e.currentTarget.style.background = colorScheme.contactTitle;
 	};
 
 	const handleGoogleSignIn = () => {
@@ -91,7 +104,9 @@ export default function LoginPage() {
 	return (
 		<div
 			className="min-h-screen flex flex-col items-center justify-center"
-			style={{ background: colorScheme.background }}
+			style={{
+				background: `linear-gradient(120deg, ${colorScheme.backgroundGradientFrom}, ${colorScheme.backgroundGradientTo})`, // Use gradient from whyUsColorScheme.json
+			}}
 		>
 			{/* Top Bar */}
 			<div
@@ -166,7 +181,7 @@ export default function LoginPage() {
 							type="button"
 							onClick={handleSubmit}
 							className="w-full mt-4 py-3 rounded text-white text-lg font-semibold"
-							style={{ background: colorScheme.primary }}
+							style={{ background: colorScheme.contactTitle }}
 							onMouseOver={handleButtonHover}
 							onFocus={handleButtonHover}
 							onMouseOut={handleButtonOut}
@@ -190,7 +205,7 @@ export default function LoginPage() {
 								className="font-medium"
 								style={{ color: colorScheme.link }}
 							>
-								Sign up
+									 up
 							</a>
 						</p>
 					</div>

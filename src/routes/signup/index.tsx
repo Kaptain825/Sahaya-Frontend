@@ -7,15 +7,28 @@ import GoogleButton from "react-google-button";
 import signupSchema from "../../schema/signupFormSchema.json";
 import signupUiSchema from "../../schema/signupUiSchema.json";
 import staticText from "../../text/staticText.json";
-import colorSchemeJson from "../../theme/colorScheme.json";
+import colorSchemeJson from "../../theme/whyUsColorScheme.json";
 
 interface ColorScheme {
-	background: string;
-	cardTop: string;
-	cardBody: string;
-	primary: string;
+	backgroundGradientFrom: string;
+	backgroundGradientTo: string;
+	topBar: string;
+	title: string;
+	cardBg: string;
+	cardTitle: string;
+	cardText: string;
+	cardShadow: string;
+	contactBg: string;
+	contactTitle: string;
+	contactTitleDark: string;
+	contactText: string;
+	deleteButton: string;
+	textline: string;
 	primaryHover: string;
+	primary: string;
+	cardTop: string;
 	textMain: string;
+	cardBody: string;
 	link: string;
 }
 
@@ -107,20 +120,22 @@ function SignupPage() {
 			| React.MouseEvent<HTMLButtonElement>
 			| React.FocusEvent<HTMLButtonElement>,
 	) => {
-		e.currentTarget.style.background = colorScheme.primaryHover;
+		e.currentTarget.style.background = colorScheme.contactTitleDark;
 	};
 	const handleButtonOut = (
 		e:
 			| React.MouseEvent<HTMLButtonElement>
 			| React.FocusEvent<HTMLButtonElement>,
 	) => {
-		e.currentTarget.style.background = colorScheme.primary;
+		e.currentTarget.style.background = colorScheme.contactTitle;
 	};
 
 	return (
 		<div
 			className="min-h-screen flex flex-col items-center justify-center"
-			style={{ background: colorScheme.background }}
+			style={{
+				background: `linear-gradient(120deg, ${colorScheme.backgroundGradientFrom}, ${colorScheme.backgroundGradientTo})`, // Use gradient from whyUsColorScheme.json
+			}}
 		>
 			{/* Top Bar for logo/links */}
 			<div
@@ -132,8 +147,15 @@ function SignupPage() {
 			</div>
 			<div className="flex-1 flex items-center justify-center w-full">
 				<div
-					className="w-full bg-white rounded shadow-lg flex flex-col justify-center items-center"
-					style={{ maxWidth: 420, minHeight: 520, aspectRatio: "3/4" }}
+					className="w-full bg-white rounded-lg shadow-xl flex flex-col justify-center items-center"
+					style={{
+						maxWidth: 420,
+						minHeight: 520,
+						padding: "24px", // Add padding for better spacing
+						border: "1px solid rgba(0, 0, 0, 0.1)", // Subtle border for definition
+						boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)", // Refined shadow for depth
+						background: "#ffffff", // Ensure consistent background
+					}}
 				>
 					{/* Card Header */}
 					<div
@@ -246,7 +268,7 @@ function SignupPage() {
 							type="submit"
 							data-testid="signup-submit-button"
 							className="w-full mt-4 py-3 rounded text-white text-lg font-semibold"
-							style={{ background: colorScheme.primary }}
+							style={{ background: colorScheme.contactTitle }}
 							disabled={loading || !isValid}
 							onMouseOver={handleButtonHover}
 							onFocus={handleButtonHover}
