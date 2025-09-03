@@ -23,6 +23,7 @@ import { Route as AssessmentChallengeIndexRouteImport } from './routes/assessmen
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo.start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo.start.api-request'
 import { Route as TemplateQuestionsNewIndexRouteImport } from './routes/template/questions/new/index'
+import { Route as TemplateQuestionsListIndexRouteImport } from './routes/template/questions/list/index'
 import { ServerRoute as ApiDemoNamesServerRouteImport } from './routes/api.demo-names'
 
 const rootServerRouteImport = createServerRootRoute()
@@ -89,6 +90,12 @@ const TemplateQuestionsNewIndexRoute =
     path: '/template/questions/new/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const TemplateQuestionsListIndexRoute =
+  TemplateQuestionsListIndexRouteImport.update({
+    id: '/template/questions/list/',
+    path: '/template/questions/list/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiDemoNamesServerRoute = ApiDemoNamesServerRouteImport.update({
   id: '/api/demo-names',
   path: '/api/demo-names',
@@ -107,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/assessment/start': typeof AssessmentStartIndexRoute
   '/template/list': typeof TemplateListIndexRoute
   '/template/questions': typeof TemplateQuestionsIndexRoute
+  '/template/questions/list': typeof TemplateQuestionsListIndexRoute
   '/template/questions/new': typeof TemplateQuestionsNewIndexRoute
 }
 export interface FileRoutesByTo {
@@ -121,6 +129,7 @@ export interface FileRoutesByTo {
   '/assessment/start': typeof AssessmentStartIndexRoute
   '/template/list': typeof TemplateListIndexRoute
   '/template/questions': typeof TemplateQuestionsIndexRoute
+  '/template/questions/list': typeof TemplateQuestionsListIndexRoute
   '/template/questions/new': typeof TemplateQuestionsNewIndexRoute
 }
 export interface FileRoutesById {
@@ -136,6 +145,7 @@ export interface FileRoutesById {
   '/assessment/start/': typeof AssessmentStartIndexRoute
   '/template/list/': typeof TemplateListIndexRoute
   '/template/questions/': typeof TemplateQuestionsIndexRoute
+  '/template/questions/list/': typeof TemplateQuestionsListIndexRoute
   '/template/questions/new/': typeof TemplateQuestionsNewIndexRoute
 }
 export interface FileRouteTypes {
@@ -152,6 +162,7 @@ export interface FileRouteTypes {
     | '/assessment/start'
     | '/template/list'
     | '/template/questions'
+    | '/template/questions/list'
     | '/template/questions/new'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -166,6 +177,7 @@ export interface FileRouteTypes {
     | '/assessment/start'
     | '/template/list'
     | '/template/questions'
+    | '/template/questions/list'
     | '/template/questions/new'
   id:
     | '__root__'
@@ -180,6 +192,7 @@ export interface FileRouteTypes {
     | '/assessment/start/'
     | '/template/list/'
     | '/template/questions/'
+    | '/template/questions/list/'
     | '/template/questions/new/'
   fileRoutesById: FileRoutesById
 }
@@ -195,6 +208,7 @@ export interface RootRouteChildren {
   AssessmentStartIndexRoute: typeof AssessmentStartIndexRoute
   TemplateListIndexRoute: typeof TemplateListIndexRoute
   TemplateQuestionsIndexRoute: typeof TemplateQuestionsIndexRoute
+  TemplateQuestionsListIndexRoute: typeof TemplateQuestionsListIndexRoute
   TemplateQuestionsNewIndexRoute: typeof TemplateQuestionsNewIndexRoute
 }
 export interface FileServerRoutesByFullPath {
@@ -305,6 +319,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TemplateQuestionsNewIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/template/questions/list/': {
+      id: '/template/questions/list/'
+      path: '/template/questions/list'
+      fullPath: '/template/questions/list'
+      preLoaderRoute: typeof TemplateQuestionsListIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 declare module '@tanstack/react-start/server' {
@@ -331,6 +352,7 @@ const rootRouteChildren: RootRouteChildren = {
   AssessmentStartIndexRoute: AssessmentStartIndexRoute,
   TemplateListIndexRoute: TemplateListIndexRoute,
   TemplateQuestionsIndexRoute: TemplateQuestionsIndexRoute,
+  TemplateQuestionsListIndexRoute: TemplateQuestionsListIndexRoute,
   TemplateQuestionsNewIndexRoute: TemplateQuestionsNewIndexRoute,
 }
 export const routeTree = rootRouteImport
