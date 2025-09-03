@@ -22,70 +22,66 @@ interface Template {
 	id: string;
 	assessmentTemplateName: string;
 	lastUpdated: string;
-	updatedAt: string;
 }
 
 interface ModalData {
 	templateId?: string;
+	templateName?: string;
 	lastUpdated?: string;
-	timestamp?: string;
 }
 
 export const Route = createFileRoute("/template/list/")({
-	component: AssessmentQuestionListPage,
+	component: AssessmentTemplateListPage,
 });
 
 export default Route;
 
-function AssessmentQuestionListPage() {
-	const [questions, setQuestions] = useState<AssessmentQuestion[]>([]);
-	interface Template {
-		assessmentTemplateName: string;
-		lastUpdated: string;
-	}
+function AssessmentTemplateListPage() {
+	//const [templates, setTemplateDetails] = useState<AssessmentTemplate[]>([]);
+	//interface Template {
+	//	assessmentTemplateName: string;
+	//	lastUpdated: string;
+	//}
 
-	const [templateQuestions, setTemplateQuestions] = useState<
-		TemplateQuestion[]
+	const [templateDetails, setTemplateDetails] = useState<
+		Template[]
 	>([]);
 	const [modal, setModal] = useState<null | {
 		type: "template" | "api";
 		data: {
 			templateId?: string;
-			questionId?: string;
-			createdAt?: string;
-			updatedAt?: string;
+			templateName?: string;
 			lastUpdated?: string;
 		}
 	}>(null);
-	const [sortKey, setSortKey] = useState<"challengeType" | "updatedAt">(
-		"challengeType",
-	)
+	const [sortKey, setSortKey] = useState<"ageBand" | "lastUpdated">("ageBand");
+	const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 	const navigate = useNavigate();
 
-	// Load templateQuestions from localStorage on mount
+	// Load template details from localStorage on mount
 	useEffect(() => {
-		const stored = localStorage.getItem("templateQuestions");
+		const stored = localStorage.getItem("templateDetails");
 		if (stored) {
-			setTemplateQuestions(JSON.parse(stored));
+			setTemplateDetails(JSON.parse(stored));
 		}
 	}, []);
 
-	// Delete a template question from localStorage
-	const handleDeleteTemplate = (createdAt: string) => {
-		if (window.confirm("Are you sure you want to delete this question?")) {
-			const updated = templateQuestions.filter(
-				(q) => q.createdAt !== createdAt,
+	// Delete a template from localStorage
+	const handleDeleteTemplate = (lastUpdated: string) => {
+		if (window.confirm("Are you sure you want to delete this template?")) {
+			const updated = templateDetails.filter(
+				(q) => q.lastUpdated !== lastUpdated,
 			)
-			setTemplateQuestions(updated);
-			localStorage.setItem("templateQuestions", JSON.stringify(updated));
+			setTemplateDetails(updated);
+			localStorage.setItem("templateDetails", JSON.stringify(updated));
 		}
 	}
 
 	useEffect(() => {
-		fetchQuestions();
+		fetchTemplates();
 	}, []);
 
-	const fetchQuestions = async () => {
+	const fetchTemplates = async () => {
 		try {
 			const response = await fetch(
 				"https://68b598e2e5dc090291af94cd.mockapi.io/template/assessment",
@@ -96,31 +92,48 @@ function AssessmentQuestionListPage() {
 			console.log("First item:", data[0]); // Debug log
 
 			if (Array.isArray(data) && data.length > 0) {
-				setQuestions(data);
+				setTemplateDetails(data);
 			} else {
-				setQuestions([]);
+				setTemplateDetails([]);
 			}
 		} catch (err) {
-			console.error("Error fetching questions", err);
-			setQuestions([]);
-		}
-	}
-
-	const handleDelete = async (id: string) => {
-		if (window.confirm("Are you sure you want to delete this question?")) {
-			await fetch(
-				`https://68b598e2e5dc090291af94cd.mockapi.io/template/assessment/${id}`,
-				{ method: "DELETE" },
-			)
-			fetchQuestions(); // refresh list
+			console.error("Error fetching templates", err);
+			setTemplateDetails([]);
 		}
 	}
 
 	const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const key = e.target.value as "challengeType" | "updatedAt";
+		const key = e.target.value as "ageBand" | "lastUpdated";
 		setSortKey(key);
-		const sorted = [...questions].sort((a, b) => a[key].localeCompare(b[key]));
-		setQuestions(sorted);
+		sortTemplates(key, sortDirection);
+	}
+
+	const toggleSortDirection = () => {
+		const newDirection = sortDirection === "asc" ? "desc" : "asc";
+		setSortDirection(newDirection);
+		sortTemplates(sortKey, newDirection);
+	}
+
+	const sortTemplates = (key: "ageBand" | "lastUpdated", direction: "asc" | "desc") => {
+		const sorted = [...templateDetails].sort((a, b) => {
+			if (key === "ageBand") {
+				const getAgeBand = (name: string) => {
+					const lastDigit = parseInt(name.slice(-1));
+					if (lastDigit === 0) return 0;
+					if (lastDigit === 1) return 1;
+					if (lastDigit === 2) return 2;
+					if (lastDigit === 3) return 3;
+					return 4;
+				};
+				const bandA = getAgeBand(a.assessmentTemplateName);
+				const bandB = getAgeBand(b.assessmentTemplateName);
+				return direction === "asc" ? bandA - bandB : bandB - bandA;
+			} else {
+				const comparison = new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime();
+				return direction === "asc" ? -comparison : comparison;
+			}
+		});
+		setTemplateDetails(sorted);
 	}
 
 	return (
@@ -201,36 +214,56 @@ function AssessmentQuestionListPage() {
 					>
 						Sort by:
 					</label>
-					<select
-						id="sort-select"
-						value={sortKey}
-						onChange={handleSortChange}
-						style={{
-							padding: "9px 22px",
-							borderRadius: 8,
-							border: `2px solid ${whyUs.cardTitle}`,
-							background: whyUs.cardBg,
-							color: whyUs.cardTitle,
-							fontWeight: 600,
-							fontSize: 16,
-							boxShadow: `0 3px 10px ${whyUs.cardShadow}`,
-							outline: "none",
-							cursor: "pointer",
-							transition: "all 0.3s ease-in-out",
-							transform: "scale(1)",
-						}}
-						onMouseEnter={(e) => {
-							e.currentTarget.style.transform = "scale(1.05)";
-							e.currentTarget.style.boxShadow = `0 4px 15px ${whyUs.cardShadow}`;
-						}}
-						onMouseLeave={(e) => {
-							e.currentTarget.style.transform = "scale(1)";
-							e.currentTarget.style.boxShadow = `0 3px 10px ${whyUs.cardShadow}`;
-						}}
-					>
-						<option value="ageBand">Age Band</option>
-						<option value="updatedAt">Last Updated</option>
-					</select>
+					<div className="flex items-center gap-2">
+						<select
+							id="sort-select"
+							value={sortKey}
+							onChange={handleSortChange}
+							style={{
+								padding: "9px 22px",
+								borderRadius: 8,
+								border: `2px solid ${whyUs.cardTitle}`,
+								background: whyUs.cardBg,
+								color: whyUs.cardTitle,
+								fontWeight: 600,
+								fontSize: 16,
+								boxShadow: `0 3px 10px ${whyUs.cardShadow}`,
+								outline: "none",
+								cursor: "pointer",
+								transition: "all 0.3s ease-in-out",
+								transform: "scale(1)",
+							}}
+							onMouseEnter={(e) => {
+								e.currentTarget.style.transform = "scale(1.05)";
+								e.currentTarget.style.boxShadow = `0 4px 15px ${whyUs.cardShadow}`;
+							}}
+							onMouseLeave={(e) => {
+								e.currentTarget.style.transform = "scale(1)";
+								e.currentTarget.style.boxShadow = `0 3px 10px ${whyUs.cardShadow}`;
+							}}
+						>
+							<option value="ageBand">Age Band</option>
+							<option value="lastUpdated">Last Updated</option>
+						</select>
+						<button
+							onClick={toggleSortDirection}
+							className="p-2 rounded transition-all duration-200 hover:scale-105"
+							style={{
+								background: whyUs.cardBg,
+								border: `2px solid ${whyUs.cardTitle}`,
+								color: whyUs.cardTitle,
+								fontSize: "1.2rem",
+								lineHeight: 1,
+								width: "36px",
+								height: "36px",
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center"
+							}}
+						>
+							{sortDirection === "asc" ? "↓" : "↑"}
+						</button>
+					</div>
 					<button
 						type="button"
 						onClick={() => navigate({ to: "/template/questions/new" })}
@@ -242,12 +275,12 @@ function AssessmentQuestionListPage() {
 				</div>
 			</div>
 
-			{/* Question Cards */}
+			{/* Template Cards */}
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-				{/* Render templateQuestions from localStorage first */}
-				{templateQuestions.map((q) => (
+				{/* Render templates from localStorage first */}
+				{templateDetails.map((q) => (
 					<button
-						key={q.createdAt + q.question}
+						key={q.lastUpdated + q.assessmentTemplateName}
 						type="button"
 						className="rounded shadow-lg p-4 flex flex-col justify-between cursor-pointer text-left"
 						style={{
@@ -272,9 +305,9 @@ function AssessmentQuestionListPage() {
 							setModal({
 								type: "template",
 								data: {
-									templateId: q.assessmentTemplateName,
+									templateId: q.id,
+									templateName: q.assessmentTemplateName,
 									lastUpdated: q.lastUpdated,
-									createdAt: q.lastUpdated // using lastUpdated as the timestamp
 								},
 							})
 						}
@@ -319,7 +352,7 @@ function AssessmentQuestionListPage() {
 								type="button"
 								onClick={(e) => {
 									e.stopPropagation()
-									handleDeleteTemplate(q.createdAt);
+									handleDeleteTemplate(q.lastUpdated);
 								}}
 								className="px-3 py-1 text-white rounded transition-all duration-200 hover:brightness-90 hover:scale-105"
 								style={{
@@ -332,92 +365,7 @@ function AssessmentQuestionListPage() {
 						</div>
 					</button>
 				))}
-				{/* Then render the original hardcoded questions */}
-				{questions.map((q) => (
-					<button
-						key={q.id}
-						type="button"
-						className="rounded shadow-lg p-4 flex flex-col justify-between cursor-pointer text-left"
-						style={{
-							background: "#ffffff", // White background
-							boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)", // Subtle shadow
-							borderRadius: "16px", // Rounded corners
-							transition:
-								"transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
-							transform: "scale(1)",
-							border: "1px solid #000000", // Black border
-						}}
-						onMouseEnter={(e) => {
-							e.currentTarget.style.transform = "scale(1.02)";
-							e.currentTarget.style.boxShadow =
-								"0 6px 20px rgba(0, 0, 0, 0.15)";
-						}}
-						onMouseLeave={(e) => {
-							e.currentTarget.style.transform = "scale(1)";
-							e.currentTarget.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
-						}}
-						onClick={() =>
-							setModal({
-								type: "api",
-								data: {
-									questionId: q.id,
-									templateId: q.assessmentTemplateName,
-									lastUpdated: q.lastUpdated,
-									updatedAt: q.lastUpdated
-								},
-							})
-						}
-					>
-						<div>
-							<h2
-								className="text-xl font-bold mb-2"
-								style={{ color: "#2d3748" }} // Dark gray for good contrast
-							>
-								{q.assessmentTemplateName}
-							</h2>
-							<p className="text-sm" style={{ color: "#6b7280", opacity: 0.8 }}>
-								Last updated: {new Date(q.lastUpdated).toLocaleDateString()} {new Date(q.lastUpdated).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second: '2-digit', hour12: false})}
-							</p>
-							<p className="text-sm" style={{ color: "#4B5563" }}>
-								Age Band: {(() => {
-									const lastDigit = parseInt(q.assessmentTemplateName.slice(-1));
-									if (lastDigit === 0) return "0-3";
-									if (lastDigit === 1) return "3-5";
-									if (lastDigit === 2) return "6-8";
-									if (lastDigit === 3) return "9-12";
-									return "13+";
-								})()}
-							</p>
-						</div>
-						<div
-							className="flex justify-end gap-2 mt-4"
-							onClick={(e) => e.stopPropagation()}
-							onKeyDown={(e) => e.stopPropagation()}
-						>
-							<button
-								type="button"
-								className="px-3 py-1 text-white rounded transition-all duration-200 hover:brightness-90 hover:scale-105"
-								style={{
-									background: whyUs.contactTitle,
-									color: "#ffffff",
-								}}
-							>
-								Edit
-							</button>
-							<button
-								type="button"
-								onClick={() => handleDelete(q.id)}
-								className="px-3 py-1 text-white rounded transition-all duration-200 hover:brightness-90 hover:scale-105"
-								style={{
-									background: "#ef4444",
-									color: "#ffffff",
-								}}
-							>
-								Delete
-							</button>
-						</div>
-					</button>
-				))}
+
 			</div>
 
 			{/* Modal Popup */}
@@ -516,12 +464,27 @@ function AssessmentQuestionListPage() {
 									color: whyUs.cardText,
 								}}
 							>
-								{modal.data.templateId}
+								{modal.data.templateName}
 							</h2>
-							<p style={{ color: "#888", marginBottom: 18 }}>
-								{modal.data.updatedAt && 
-									`Last updated: ${new Date(modal.data.updatedAt).toLocaleDateString()} ${new Date(modal.data.updatedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second: '2-digit', hour12: false})}`}
+							<p style={{ color: "#888", marginBottom: 24 }}>
+								{modal.data.lastUpdated && 
+									`Last updated: ${new Date(modal.data.lastUpdated).toLocaleDateString()} ${new Date(modal.data.lastUpdated).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second: '2-digit', hour12: false})}`}
 							</p>
+							<button
+								onClick={() => {
+									const path = `/template/questions/list?templateId=${modal.data.templateId}`;
+									window.location.href = path;
+									setModal(null);
+								}}
+								className="mt-4 px-6 py-3 rounded-lg text-white font-semibold transition-all duration-200 hover:brightness-90 hover:scale-105"
+								style={{
+									background: whyUs.cardTitle,
+									boxShadow: `0 4px 12px ${whyUs.cardShadow}`,
+									cursor: "pointer",
+								}}
+							>
+								Open Assessment Template
+							</button>
 						</div>
 					</div>
 				</dialog>
