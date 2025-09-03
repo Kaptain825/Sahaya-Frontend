@@ -65,11 +65,11 @@ function AssessmentQuestionListPage() {
 		data: {
 			templateId?: string;
 			questionId?: string;
-		}
+		};
 	}>(null);
 	const [sortKey, setSortKey] = useState<"challengeType" | "updatedAt">(
 		"challengeType",
-	)
+	);
 	const navigate = useNavigate();
 
 	// Load templateQuestions from localStorage on mount
@@ -85,11 +85,11 @@ function AssessmentQuestionListPage() {
 		if (window.confirm("Are you sure you want to delete this question?")) {
 			const updated = templateQuestions.filter(
 				(q) => q.createdAt !== createdAt,
-			)
+			);
 			setTemplateQuestions(updated);
 			localStorage.setItem("templateQuestions", JSON.stringify(updated));
 		}
-	}
+	};
 
 	useEffect(() => {
 		fetchQuestions();
@@ -99,7 +99,7 @@ function AssessmentQuestionListPage() {
 		try {
 			const response = await fetch(
 				"https://68b2bc6cc28940c9e69d3990.mockapi.io/api/v1/Template",
-			)
+			);
 			const data = await response.json();
 
 			console.log("API Response:", data); // Debug log
@@ -114,24 +114,24 @@ function AssessmentQuestionListPage() {
 			console.error("Error fetching questions", err);
 			setQuestions([]);
 		}
-	}
+	};
 
 	const handleDelete = async (id: string) => {
 		if (window.confirm("Are you sure you want to delete this question?")) {
 			await fetch(
 				`https://68b2bc6cc28940c9e69d3990.mockapi.io/api/v1/Template/${id}`,
 				{ method: "DELETE" },
-			)
+			);
 			fetchQuestions(); // refresh list
 		}
-	}
+	};
 
 	const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const key = e.target.value as "challengeType" | "updatedAt";
 		setSortKey(key);
 		const sorted = [...questions].sort((a, b) => a[key].localeCompare(b[key]));
 		setQuestions(sorted);
-	}
+	};
 
 	return (
 		<div
@@ -243,7 +243,7 @@ function AssessmentQuestionListPage() {
 					</select>
 					<button
 						type="button"
-						onClick={() => navigate({ to: "/template/list/new" })}
+						onClick={() => navigate({ to: "/template/questions/new" })}
 						className="px-4 py-2 rounded text-white font-semibold transition-all duration-200 hover:brightness-90 hover:scale-105"
 						style={{ background: whyUs.cardTitle, marginLeft: 16 }}
 					>
@@ -325,7 +325,7 @@ function AssessmentQuestionListPage() {
 							<button
 								type="button"
 								onClick={(e) => {
-									e.stopPropagation()
+									e.stopPropagation();
 									handleDeleteTemplate(q.createdAt);
 								}}
 								className="px-3 py-1 text-white rounded transition-all duration-200 hover:brightness-90 hover:scale-105"
@@ -448,7 +448,7 @@ function AssessmentQuestionListPage() {
 					onClick={() => setModal(null)}
 					onKeyDown={(e) => {
 						if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
-							setModal(null)
+							setModal(null);
 						}
 					}}
 					aria-modal="true"
@@ -472,7 +472,7 @@ function AssessmentQuestionListPage() {
 						onClick={(e) => e.stopPropagation()}
 						onKeyDown={(e) => {
 							// Prevent propagation for keyboard events as well
-							e.stopPropagation()
+							e.stopPropagation();
 						}}
 					>
 						{/* X Close Button */}
@@ -503,17 +503,17 @@ function AssessmentQuestionListPage() {
 							}}
 							onMouseEnter={(e) => {
 								(e.currentTarget as HTMLButtonElement).style.background =
-									whyUs.deleteButton
+									whyUs.deleteButton;
 								(e.currentTarget as HTMLButtonElement).style.color =
-									whyUs.cardText
+									whyUs.cardText;
 								(e.currentTarget as HTMLButtonElement).style.border =
 									`1.5px solid ${whyUs.contactBg}`;
 							}}
 							onMouseLeave={(e) => {
 								(e.currentTarget as HTMLButtonElement).style.background =
-									"transparent"
+									"transparent";
 								(e.currentTarget as HTMLButtonElement).style.color =
-									whyUs.cardText
+									whyUs.cardText;
 								(e.currentTarget as HTMLButtonElement).style.border =
 									`1.5px solid ${whyUs.deleteButton}`;
 							}}
@@ -576,7 +576,7 @@ function AssessmentQuestionListPage() {
 										</div>
 										{modal.data.options.map((opt: string, idx: number) => (
 											<div
-												key={"${opt}-${idx}"}
+												key={`${opt}-${idx}`}
 												style={{
 													background: whyUs.cardBg,
 													borderRadius: 8,
@@ -602,5 +602,5 @@ function AssessmentQuestionListPage() {
 				</dialog>
 			)}
 		</div>
-	)
+	);
 }
