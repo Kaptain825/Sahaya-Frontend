@@ -18,7 +18,7 @@ const challengeOptions = childInfoFormSchema.properties.challenges.items.enum;
 const ageBandOptions = childInfoFormSchema.properties.ageBand.enum;
 const questionTypes = ["radio", "rating", "boolean", "text"];
 
-export const Route = createFileRoute("/template/list/new/")({
+export const Route = createFileRoute("/template/questions/new/")({
 	component: RouteComponent,
 });
 
@@ -109,7 +109,7 @@ function RouteComponent() {
 			const saved = await response.json();
 			console.log("Question saved:", saved);
 
-			navigate({ to: "/template/list" });
+			navigate({ to: "/template/questions" });
 		} catch (err) {
 			console.error(err);
 			alert("Error creating question. Please try again.");

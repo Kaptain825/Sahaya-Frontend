@@ -18,20 +18,29 @@ const whyUs = whyUsColorScheme as {
 	deleteButton?: string;
 };
 
-interface Template {
+interface AssessmentQuestion {
 	id: string;
-	assessmentTemplateName: string;
-	lastUpdated: string;
+	questionText: string;
+	challengeType: string;
+	createdBy: string;
 	updatedAt: string;
 }
 
+// Corrected ModalData usage and property mappings
 interface ModalData {
 	templateId?: string;
-	lastUpdated?: string;
-	timestamp?: string;
+	questionId?: string;
+	question?: string;
+	challenge?: string;
+	challengeType?: string;
+	createdAt?: string;
+	updatedAt?: string;
+	type?: string;
+	options?: string[];
+	ageBand?: string;
 }
 
-export const Route = createFileRoute("/template/list/")({
+export const Route = createFileRoute("/template/questions/")({
 	component: AssessmentQuestionListPage,
 });
 
@@ -39,9 +48,13 @@ export default Route;
 
 function AssessmentQuestionListPage() {
 	const [questions, setQuestions] = useState<AssessmentQuestion[]>([]);
-	interface Template {
-		assessmentTemplateName: string;
-		lastUpdated: string;
+	interface TemplateQuestion {
+		question: string;
+		challenge: string;
+		ageBand: string;
+		createdAt: string;
+		type?: string;
+		options?: string[];
 	}
 
 	const [templateQuestions, setTemplateQuestions] = useState<
@@ -52,9 +65,6 @@ function AssessmentQuestionListPage() {
 		data: {
 			templateId?: string;
 			questionId?: string;
-			createdAt?: string;
-			updatedAt?: string;
-			lastUpdated?: string;
 		}
 	}>(null);
 	const [sortKey, setSortKey] = useState<"challengeType" | "updatedAt">(
@@ -88,7 +98,7 @@ function AssessmentQuestionListPage() {
 	const fetchQuestions = async () => {
 		try {
 			const response = await fetch(
-				"https://68b598e2e5dc090291af94cd.mockapi.io/template/assessment",
+				"https://68b2bc6cc28940c9e69d3990.mockapi.io/api/v1/Template",
 			)
 			const data = await response.json();
 
@@ -109,7 +119,7 @@ function AssessmentQuestionListPage() {
 	const handleDelete = async (id: string) => {
 		if (window.confirm("Are you sure you want to delete this question?")) {
 			await fetch(
-				`https://68b598e2e5dc090291af94cd.mockapi.io/template/assessment/${id}`,
+				`https://68b2bc6cc28940c9e69d3990.mockapi.io/api/v1/Template/${id}`,
 				{ method: "DELETE" },
 			)
 			fetchQuestions(); // refresh list
@@ -183,7 +193,7 @@ function AssessmentQuestionListPage() {
 						display: "inline-block",
 					}}
 				>
-					Assessment Templates
+					Assessment Questions
 				</h1>
 				<div style={{ display: "flex", alignItems: "center", gap: 16 }}>
 					<label
@@ -228,16 +238,16 @@ function AssessmentQuestionListPage() {
 							e.currentTarget.style.boxShadow = `0 3px 10px ${whyUs.cardShadow}`;
 						}}
 					>
-						<option value="ageBand">Age Band</option>
+						<option value="challengeType">Challenge</option>
 						<option value="updatedAt">Last Updated</option>
 					</select>
 					<button
 						type="button"
-						onClick={() => navigate({ to: "/template/questions/new" })}
+						onClick={() => navigate({ to: "/template/list/new" })}
 						className="px-4 py-2 rounded text-white font-semibold transition-all duration-200 hover:brightness-90 hover:scale-105"
 						style={{ background: whyUs.cardTitle, marginLeft: 16 }}
 					>
-						+ Create New Template
+						+ Create New Question
 					</button>
 				</div>
 			</div>
@@ -251,13 +261,13 @@ function AssessmentQuestionListPage() {
 						type="button"
 						className="rounded shadow-lg p-4 flex flex-col justify-between cursor-pointer text-left"
 						style={{
-							background: "#ffffff", // White background
+							background: "#b2e1db", // Light gray background
 							boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)", // Subtle shadow
 							borderRadius: "16px", // Rounded corners
 							transition:
 								"transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
 							transform: "scale(1)",
-							border: "1px solid #000000", // Black border
+							border: "1px solid rgba(0, 0, 0, 0.1)", // Subtle border
 						}}
 						onMouseEnter={(e) => {
 							e.currentTarget.style.transform = "scale(1.03)";
@@ -272,9 +282,10 @@ function AssessmentQuestionListPage() {
 							setModal({
 								type: "template",
 								data: {
-									templateId: q.assessmentTemplateName,
-									lastUpdated: q.lastUpdated,
-									createdAt: q.lastUpdated // using lastUpdated as the timestamp
+									templateId: q.createdAt, // Assuming createdAt is unique
+									question: q.question,
+									challenge: q.challenge,
+									ageBand: q.ageBand,
 								},
 							})
 						}
@@ -284,20 +295,16 @@ function AssessmentQuestionListPage() {
 								className="text-xl font-bold mb-2"
 								style={{ color: "#374151" }} // Dark gray text for contrast
 							>
-								{q.assessmentTemplateName}
+								{q.question}
 							</h2>
-							<p className="text-sm" style={{ color: "#6b7280", opacity: 0.8 }}>
-								Last updated: {new Date(q.lastUpdated).toLocaleDateString()} {new Date(q.lastUpdated).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second: '2-digit', hour12: false})}
+							<p className="text-sm" style={{ color: "#6b7280" }}>
+								Challenge: {q.challenge}
 							</p>
-							<p className="text-sm" style={{ color: "#4B5563" }}>
-								Age Band: {(() => {
-									const lastDigit = parseInt(q.assessmentTemplateName.slice(-1));
-									if (lastDigit === 0) return "0-3";
-									if (lastDigit === 1) return "3-5";
-									if (lastDigit === 2) return "6-8";
-									if (lastDigit === 3) return "9-12";
-									return "13+";
-								})()}
+							<p className="text-sm" style={{ color: "#6b7280" }}>
+								Age Band: {q.ageBand}
+							</p>
+							<p className="text-sm" style={{ color: "#9ca3af", opacity: 0.8 }}>
+								Created: {new Date(q.createdAt).toLocaleString()}
 							</p>
 						</div>
 						<div
@@ -339,13 +346,13 @@ function AssessmentQuestionListPage() {
 						type="button"
 						className="rounded shadow-lg p-4 flex flex-col justify-between cursor-pointer text-left"
 						style={{
-							background: "#ffffff", // White background
+							background: "#7fccc3", // Light gray background
 							boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)", // Subtle shadow
 							borderRadius: "16px", // Rounded corners
 							transition:
 								"transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
 							transform: "scale(1)",
-							border: "1px solid #000000", // Black border
+							border: "1px solid rgba(0, 0, 0, 0.1)", // Subtle border
 						}}
 						onMouseEnter={(e) => {
 							e.currentTarget.style.transform = "scale(1.02)";
@@ -361,9 +368,11 @@ function AssessmentQuestionListPage() {
 								type: "api",
 								data: {
 									questionId: q.id,
-									templateId: q.assessmentTemplateName,
-									lastUpdated: q.lastUpdated,
-									updatedAt: q.lastUpdated
+									question: q.questionText,
+									challengeType: q.challengeType,
+									createdAt: q.createdAt,
+									updatedAt: q.updatedAt,
+									ageBand: q.ageBand, // <-- add this
 								},
 							})
 						}
@@ -373,20 +382,16 @@ function AssessmentQuestionListPage() {
 								className="text-xl font-bold mb-2"
 								style={{ color: "#2d3748" }} // Dark gray for good contrast
 							>
-								{q.assessmentTemplateName}
+								{q.questionText}
 							</h2>
-							<p className="text-sm" style={{ color: "#6b7280", opacity: 0.8 }}>
-								Last updated: {new Date(q.lastUpdated).toLocaleDateString()} {new Date(q.lastUpdated).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second: '2-digit', hour12: false})}
+							<p className="text-sm" style={{ color: "#4a5568" }}>
+								Challenge: {q.challengeType}
 							</p>
-							<p className="text-sm" style={{ color: "#4B5563" }}>
-								Age Band: {(() => {
-									const lastDigit = parseInt(q.assessmentTemplateName.slice(-1));
-									if (lastDigit === 0) return "0-3";
-									if (lastDigit === 1) return "3-5";
-									if (lastDigit === 2) return "6-8";
-									if (lastDigit === 3) return "9-12";
-									return "13+";
-								})()}
+							<p className="text-sm" style={{ color: "#4a5568" }}>
+								Age Band: {q.ageBand}
+							</p>
+							<p className="text-sm" style={{ color: "#6b7280", opacity: 0.8 }}>
+								Last updated: {new Date(q.updatedAt).toLocaleString()}
 							</p>
 						</div>
 						<div
@@ -465,7 +470,10 @@ function AssessmentQuestionListPage() {
 							border: "none",
 						}}
 						onClick={(e) => e.stopPropagation()}
-						onKeyDown={(e) => e.stopPropagation()}
+						onKeyDown={(e) => {
+							// Prevent propagation for keyboard events as well
+							e.stopPropagation()
+						}}
 					>
 						{/* X Close Button */}
 						<button
@@ -477,7 +485,7 @@ function AssessmentQuestionListPage() {
 								top: 8,
 								right: 16,
 								background: "transparent",
-								border: `1.5px solid ${whyUs.deleteButton || "#ef4444"}`,
+								border: `1.5px solid ${whyUs.deleteButton}`,
 								fontSize: 16,
 								fontWeight: 600,
 								color: whyUs.cardText,
@@ -494,14 +502,20 @@ function AssessmentQuestionListPage() {
 								zIndex: 10,
 							}}
 							onMouseEnter={(e) => {
-								e.currentTarget.style.background = whyUs.deleteButton || "#ef4444";
-								e.currentTarget.style.color = whyUs.cardText;
-								e.currentTarget.style.border = `1.5px solid ${whyUs.contactBg}`;
+								(e.currentTarget as HTMLButtonElement).style.background =
+									whyUs.deleteButton
+								(e.currentTarget as HTMLButtonElement).style.color =
+									whyUs.cardText
+								(e.currentTarget as HTMLButtonElement).style.border =
+									`1.5px solid ${whyUs.contactBg}`;
 							}}
 							onMouseLeave={(e) => {
-								e.currentTarget.style.background = "transparent";
-								e.currentTarget.style.color = whyUs.cardText;
-								e.currentTarget.style.border = `1.5px solid ${whyUs.deleteButton || "#ef4444"}`;
+								(e.currentTarget as HTMLButtonElement).style.background =
+									"transparent"
+								(e.currentTarget as HTMLButtonElement).style.color =
+									whyUs.cardText
+								(e.currentTarget as HTMLButtonElement).style.border =
+									`1.5px solid ${whyUs.deleteButton}`;
 							}}
 						>
 							X
@@ -516,12 +530,73 @@ function AssessmentQuestionListPage() {
 									color: whyUs.cardText,
 								}}
 							>
-								{modal.data.templateId}
+								{modal.type === "template"
+									? modal.data.question +
+										(modal.data.type === "text" ? " (100 words)" : "")
+									: modal.data.questionText}
 							</h2>
-							<p style={{ color: "#888", marginBottom: 18 }}>
-								{modal.data.updatedAt && 
-									`Last updated: ${new Date(modal.data.updatedAt).toLocaleDateString()} ${new Date(modal.data.updatedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second: '2-digit', hour12: false})}`}
+							<p
+								style={{
+									fontWeight: 500,
+									color: whyUs.cardText,
+									marginBottom: 8,
+								}}
+							>
+								Challenge:{" "}
+								{modal.type === "template"
+									? modal.data.challenge
+									: modal.data.challengeType}
 							</p>
+							<p
+								style={{
+									fontWeight: 500,
+									color: whyUs.cardText,
+									marginBottom: 8,
+								}}
+							>
+								Age Band:{" "}
+								{modal.type === "template"
+									? modal.data.ageBand
+									: modal.data.ageBand}
+							</p>
+							<p style={{ color: "#888", marginBottom: 18 }}>
+								{modal.type === "template"
+									? `Created: ${new Date(modal.data.createdAt).toLocaleString()}`
+									: `Last updated: ${new Date(modal.data.updatedAt).toLocaleString()}`}
+							</p>
+							{/* Render options if present for radio, boolean, or rating */}
+							{modal.type === "template" &&
+								(modal.data.type === "radio" ||
+									modal.data.type === "boolean" ||
+									modal.data.type === "rating") &&
+								modal.data.options && (
+									<div style={{ marginBottom: 16 }}>
+										<div style={{ fontWeight: 600, marginBottom: 8 }}>
+											Options:
+										</div>
+										{modal.data.options.map((opt: string, idx: number) => (
+											<div
+												key={"${opt}-${idx}"}
+												style={{
+													background: whyUs.cardBg,
+													borderRadius: 8,
+													padding: "8px 14px",
+													marginBottom: 6,
+													color: whyUs.cardText,
+													textAlign: "left",
+													fontWeight: 500,
+													border: `1.5px solid ${whyUs.cardTitle}22`,
+													width: "100%",
+													maxWidth: 340,
+													margin: "0 auto 6px auto",
+												}}
+											>
+												{opt}
+											</div>
+										))}
+									</div>
+								)}
+							{/* For rating/boolean, you can add more UI as needed */}
 						</div>
 					</div>
 				</dialog>
